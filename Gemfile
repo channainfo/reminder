@@ -41,7 +41,8 @@ gem 'her'
 gem 'typhoeus'
 gem 'virtus'
 
-gem "less-rails" 
+gem 'bootstrap-sass'
+
 gem "exception_handler"
 
 #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS

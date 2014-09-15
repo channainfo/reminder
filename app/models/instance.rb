@@ -4,4 +4,10 @@ class Instance < ActiveRecord::Base
   validates_format_of :url, :end_point, with: URI.regexp
 
   MINIMUM = 1 # must be at least one
+
+  before_destroy :validate_minimum
+
+  def validate_minimum
+    raise 'Instance must be at least one' if Instance.count <= MINIMUM
+  end
 end

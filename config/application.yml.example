@@ -1,0 +1,21 @@
+defaults: &defaults
+  APP_NAME: 'Verboice Reminder System'
+  HOST: 'CURRENT_DOMAIN_NAME'
+
+  # SMTP for mailer
+  SMTP_EMAIL: 'example@gmail.com'
+  SMTP_PWD: ''
+
+  FROM_EMAIL: 'no-reply@verboice-reminder.org'
+
+development:
+  <<: *defaults
+  END_POINT: 'http://example.com/api2'
+  EMAIL: 'example@gmail.com'
+  SECRETE: ''
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

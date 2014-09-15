@@ -1,0 +1,54 @@
+
+.item-list span {
+  padding-left: 10px;
+  color: gray;
+}
+.dotted-elm {
+  border-bottom: 1px dotted #ccc; 
+  font-size: 1.4em;
+  padding: 10px;
+}
+
+.btn-submit {
+  margin-left: 20px;
+}
+
+.header-bar {
+  border-bottom: 1px dotted #ccc;
+  margin-bottom: 20px;
+}
+
+.header-bar .left {
+  float: left;
+}
+
+.header-bar .title{
+  font-size: 1.4em;
+}
+
+.header-bar .right {
+  float: right;
+  padding-top: 1em;
+}
+
+
+.action-2 {
+  width: 160px;
+}
+
+.error{
+  color: red;
+}
+
+.dropdown-menu{
+  z-index: 999999 !important;
+}
+
+.min-input{
+  width: 120px;
+}
+
+.address{
+  font-weight: bold;
+}
+
