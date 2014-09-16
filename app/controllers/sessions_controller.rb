@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :authenticate_account!, only: [:new, :create]
 
   def new
-    if user_singed_in?
+    if account_singed_in?
       redirect_to after_sign_in_path, notice: 'You already signed in'
     else
       @login_form = LoginForm.new
@@ -11,13 +11,12 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @login_form = LoginForm.new session_params
+    @login_form = LoginForm.new filter_params
 
     if(@login_form.valid?)
-      auth = Session.login(@login_form.endpoint, session_params[:email], session_params[:password])
+      account = Session.login(ENV["END_POINT"], filter_params[:email], filter_params[:password])
       if(Session.success?)
-        auth[:endpoint] = @login_form.endpoint
-        sign_in(auth)
+        sign_in(account)
         redirect_to root_url
       else
         flash.now[:error]  = "Failed to login"
@@ -33,7 +32,7 @@ class SessionsController < ApplicationController
     redirect_to sign_in_path
   end
 
-  def session_params
+  def filter_params
     params.require(:login_form).permit(:email, :password)
   end
 
