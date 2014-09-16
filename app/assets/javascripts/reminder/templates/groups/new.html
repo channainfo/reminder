@@ -1,0 +1,34 @@
+<div ng-controller='GroupNewController'>
+	<div class='field'>
+	  <label> Name </label>
+	  <div class='control'>
+	   <input type='text' name='name' ng-model="name" />
+	  </div>
+	</div>
+
+
+	<div class='field' ng-repeat="address in addresses">
+	  <label> Address </label>
+	  <div class='control'>
+	    <input type='text' name='address' class='ui-multi' value="{{address}}" />
+	    <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
+	  </div>
+	</div>
+
+	<div class='field'>
+	  <label> Address </label>
+	  <div class='control'>
+	    <input type='text' name='newAddress' ng-model="newAddress" class='ui-multi' />
+	    <a ng-click='addNewAddress()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
+	  </div>
+	</div>
+
+
+
+	<div class='field'>
+	  <label> </label>
+	  <div class='control'>
+	    <input type='button' value='Save' ng-click='save()' />
+	  </div>
+	</div>
+</div>

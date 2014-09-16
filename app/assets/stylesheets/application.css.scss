@@ -1,5 +1,9 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@import "base/mixin";
+
 @import "shared/objects";
 @import "shared/nav";
+@import "shared/form";
+

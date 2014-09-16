@@ -1,0 +1,1 @@
+var reminder = angular.module('reminder', ['templates', 'ui.router', 'ngResource']);

@@ -2,7 +2,9 @@
   <div class='container'>
     <nav class="blog-nav">
       <div class='action-menu'> 
-        <%= link_to  ENV["APP_NAME"], root_url, class: 'blog-nav-item active' %>
+        <a class='blog-nav-item active' ui-sref= 'groups' > <%= ENV["APP_NAME"] %></a>
+        <a class='blog-nav-item active' ui-sref= 'groups' > Reminder Groups</a>
+        <a class='blog-nav-item active' ui-sref= 'schedules'> Reminder Schedules </a>
       </div>
       <div class='profile-menu'> <%= render 'layouts/login_bar' %> </div>
     </nav>

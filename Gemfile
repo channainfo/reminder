@@ -37,6 +37,10 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'angularjs-rails'
+gem 'angular-rails-templates'
+
+gem 'addressable'
 gem 'her'
 gem 'typhoeus'
 gem 'virtus'
@@ -47,12 +51,6 @@ gem "exception_handler"
 
 #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 # gem 'bootstrap-sass', require: true
-
-gem 'kaminari'
-gem 'bootstrap-kaminari-views'
-gem 'addressable'
-gem 'simple_form'
-gem "twitter-bootstrap-rails"
 
 gem 'whenever', require: false
 gem 'thin'

@@ -1,0 +1,20 @@
+.field {
+  padding: 10px;
+
+	label {
+	  float: left;
+	  width: 200px;
+	  text-align:right;
+	}
+	.control {
+	  margin-left: 210px;
+	  input[type=text] {
+	    width: 240px;
+	  }
+
+	  input.ui-multi {
+	  	width: 210px !important;
+	  }
+	}
+	@include clear-after();
+}
