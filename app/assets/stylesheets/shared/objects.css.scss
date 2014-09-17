@@ -6,3 +6,23 @@ footer.copyright {
   position: fixed;
   width: 100%;
 }
+
+.main-content {
+  margin-top: 20px;
+}
+
+.l-side {
+  float:left;
+}
+
+.r-side {
+  float:right;
+  text-align:right;
+}
+
+.loading {
+  background: image_url("loading.gif");
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+

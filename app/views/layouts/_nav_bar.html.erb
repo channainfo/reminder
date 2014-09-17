@@ -1,12 +1,12 @@
 <div class="blog-masthead">
   <div class='container'>
     <nav class="blog-nav">
-      <div class='action-menu'> 
-        <a class='blog-nav-item active' ui-sref= 'groups' > <%= ENV["APP_NAME"] %></a>
-        <a class='blog-nav-item active' ui-sref= 'groups' > Reminder Groups</a>
-        <a class='blog-nav-item active' ui-sref= 'schedules'> Reminder Schedules </a>
+      <div class='l-side action-menu'> 
+        <a class='blog-nav-item' ui-sref= 'groups' > <%= ENV["APP_NAME"] %></a>
+        <a class='blog-nav-item' ui-sref= 'groups' > Reminder Groups</a>
+        <a class='blog-nav-item' ui-sref= 'schedules'> Reminder Schedules </a>
       </div>
-      <div class='profile-menu'> <%= render 'layouts/login_bar' %> </div>
+      <div class='r-side profile-menu'> <%= render 'layouts/login_bar' %> </div>
     </nav>
   </div>
 </div>

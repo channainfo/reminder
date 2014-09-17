@@ -54,4 +54,9 @@ class ApplicationController < ActionController::Base
   def previous_page
     session[:previous_page]
   end
+
+  def inject_params options
+    options[:account_id] = current_account.id
+    options
+  end
 end

@@ -5,5 +5,3 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
-Instance.find_or_create_by(name: 'verboice.com', url: 'http://verboice.com/billing', end_point: 'http://verboice.com/billing/api2')

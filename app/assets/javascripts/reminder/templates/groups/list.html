@@ -1,0 +1,19 @@
+<div class='pageTitle'>
+  <div id='group-index' class="animate-container">
+    <div ng-repeat='group in groups' class="panel panel-default animate-repeat">
+      <div class="panel-heading">
+        <div class="r-side" style="width:50px;">
+          <a class="icon" href='' ng-click='remove(group)'>
+            <span class="glyphicon glyphicon-trash"> </span>
+          </a>
+        </div>
+        <div class="l-sideh" style="margin-right: 60px;">{{group.name}}</div>
+   
+      </div>
+      <div class="panel-body">
+        <p ng-show="group.hasAddress()">{{group.addressesText()}}</p>
+        <p ng-show="!group.hasAddress()">No contacts</p>
+      </div>
+    </div>
+  </div>
+</div>

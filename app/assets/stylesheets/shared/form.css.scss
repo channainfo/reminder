@@ -1,19 +1,42 @@
-.field {
-  padding: 10px;
+$form-margin-left: 210px;
+	
+.form {
+	width: 600px;
+}
 
+.field-block {
+	label {
+		display: block;
+		font-weight: normal;
+	}
+	.control {
+		display: block;
+		input[type=text] {
+	    width: 240px;
+	    margin-left: 10px;
+	  }
+
+	  input.ui-multi {
+	  	width: $form-margin-left !important;
+	  }
+	}
+}
+
+.field {
 	label {
 	  float: left;
 	  width: 200px;
 	  text-align:right;
+	  font-weight: normal;
 	}
 	.control {
-	  margin-left: 210px;
+	  margin-left: $form-margin-left;
 	  input[type=text] {
 	    width: 240px;
 	  }
 
 	  input.ui-multi {
-	  	width: 210px !important;
+	  	width: $form-margin-left !important;
 	  }
 	}
 	@include clear-after();

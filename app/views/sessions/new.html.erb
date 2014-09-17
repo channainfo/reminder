@@ -3,7 +3,7 @@
 <%= form_for @login_form, url: sessions_path, html: { class: "form-signin" } do |f| %>
   <h2 class="form-signin-heading">Please sign in</h2>
 
-  <%= f.text_field :email, class: 'form-control', placeholder: 'Email address' %>
+  <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %>
   <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
-  <%= f.submit 'Sign in', class: 'btn btn-lg btn-primary btn-block' %>
+  <%= f.button 'Sign in', class: 'btn btn-lg btn-primary btn-block' %>
 <% end %>

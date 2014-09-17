@@ -7,8 +7,7 @@ reminder.config(['$stateProvider', '$urlRouterProvider', function($stateProvider
   $stateProvider
     .state('groups', {
       url: "/groups",
-      templateUrl: "reminder/templates/groups/index.html",
-      controller: "GroupIndexController"
+      templateUrl: "reminder/templates/groups/index.html"
     })
     .state('groups.new', {
       url: "/new",

@@ -1,34 +1,42 @@
 reminder.controller("GroupNewController", ["$scope", "Group", function($scope, Group){
-	$scope.name = "Group name";
-	$scope.addresses = ["100","1001"];
-	$scope.newAddress = "";
+	$scope.resetForm = function(){
+		$scope.group = new Group({name: '', addresses: []})
+		$scope.newAddress = "";
+	}
+	$scope.resetForm();
 
 	$scope.save = function(){
-		var data = $scope.prepareData();
-		console.log("data", data);
-		Group.save(data)
+		$scope.implicitNewAddress();
+
+		$scope.setLoadingStatus(true);
+		
+		Group.save({group: $scope.group}).$promise.then(
+			function(group){
+				$scope.setLoadingStatus(false);
+			  $scope.groups.unshift(group);
+			  $scope.resetForm();
+			  $scope.setSuccess("Group has been created");
+			},
+		  function(error){
+		  	$scope.setLoadingStatus(false);
+				$scope.setFailure("Couldn't create group");
+		  }
+		);
 	}
 
-	$scope.prepareData = function() {
-		return {
-			name: $scope.name,
-			addresses: $scope.addresses
-		}
+	$scope.implicitNewAddress = function() {
+		if($scope.newAddress != "")
+			$scope.group.addresses.push($scope.newAddress);
 	}
 
 	$scope.addNewAddress = function() {
 		if($scope.newAddress) {
-			console.log("adding address")
-			$scope.addresses.push($scope.newAddress);
+			$scope.group.addresses.push($scope.newAddress);
 			$scope.newAddress = "";
-		}
-		else{
-			console.log("empty address")
 		}
 	}
 
 	$scope.removeAddress = function(index){
-		$scope.addresses.splice(index, 1);
+		$scope.group.addresses.splice(index, 1);
 	}
-
 }])

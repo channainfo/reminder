@@ -5,13 +5,13 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  root 'reminder_groups#index'
+  root 'page#home'
 
   get 'sign_in', to: 'sessions#new'
   delete 'sign_out', to: 'sessions#destroy'
   resources :sessions, only: [:new, :create, :destroy]
   
-  resources :reminder_groups
+  resources :groups
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

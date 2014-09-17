@@ -8,6 +8,8 @@ development:
 
 test:
   <<: *defaults
+  EMAIL: 'testing@example.com'
+  PASSWORD: 'password'
 
 production:
   <<: *defaults

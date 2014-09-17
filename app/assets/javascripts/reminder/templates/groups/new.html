@@ -1,34 +1,36 @@
+
 <div ng-controller='GroupNewController'>
-	<div class='field'>
-	  <label> Name </label>
-	  <div class='control'>
-	   <input type='text' name='name' ng-model="name" />
-	  </div>
-	</div>
+	<form role="form">
+		<div class='form-group field-block' ng-class="group.name == '' ? 'has-error' : '' ">
+		  <div> <label class="control-label" for="name"> Name </label></div>
+		  <div class='control'>
+		   <input type='text' id="name" ng-model="group.name" class="form-control" />
+		  </div>
+		</div>
 
+		<div class='form-group field-block'>
+			<label class="control-label" for="new_address">Addresses</label>
+		</div>
 
-	<div class='field' ng-repeat="address in addresses">
-	  <label> Address </label>
-	  <div class='control'>
-	    <input type='text' name='address' class='ui-multi' value="{{address}}" />
-	    <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
-	  </div>
-	</div>
+		<div class='form-group field-block' ng-repeat="address in group.addresses">
+		  <div class='control'>
+		    <input type='text' id='address-{{$index}}' class='ui-multi form-control' value="{{address}}" />
+		    <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
+		  </div>
+		</div>
 
-	<div class='field'>
-	  <label> Address </label>
-	  <div class='control'>
-	    <input type='text' name='newAddress' ng-model="newAddress" class='ui-multi' />
-	    <a ng-click='addNewAddress()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
-	  </div>
-	</div>
+		<div class='form-group field-block' ng-class="newAddress =='' ? 'has-error' : '' ">
+		  <div class='control'>
+		    <input type='text' id="new_address" ng-model="newAddress" class='ui-multi form-control' />
+		    <a ng-click='addNewAddress()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
+		  </div>
+		</div>
 
-
-
-	<div class='field'>
-	  <label> </label>
-	  <div class='control'>
-	    <input type='button' value='Save' ng-click='save()' />
-	  </div>
-	</div>
+		<div class='form-group field-block'>
+		  <label> </label>
+		  <div class='control'>
+		    <button ng-click='save()' class="btn btn-primary">Save</button>
+		  </div>
+		</div>
+	</form>
 </div>
