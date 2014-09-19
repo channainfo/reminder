@@ -1,1 +1,13 @@
-scheule
+<div ng-include src="'reminder/templates/shared/alert.html'"> </div>
+
+<div class="row" ng-controller="SchedulesController" ng-init="init()">
+  <div class="col-sm-6">
+    <div ng-include src="'reminder/templates/schedules/_list.html'"> </div>
+  </div>
+
+  <div class="col-sm-2" />
+
+  <div class="col-sm-4">
+    <div ui-view class='slide-animation'></div>
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<div ng-controller="ScheduleController" ng-init="init()">
+  <form role="form">
+
+    <input type='hidden' ng-model="schedule.id" />
+
+    <!-- Group -->
+    <div class='form-group field-block'>
+      <label class="control-label" for="group">Group</label>
+      <div class='control'>
+        <select id="group" 
+                class='form-control'
+                ng-model="schedule.group_id" 
+                ng-options="group.id as group.name for group in groups"></select>
+      </div>
+    </div>
+
+    <!-- Call flow -->
+    <div class='form-group field-block' >
+      <label class="control-label" for="call_flow">Call flow</label>
+      <div class='control'>
+        <select id="call_flow" 
+                class='form-control'
+                ng-model="schedule.call_flow_id"
+                ng-change='filterVariables()'
+                ng-options="callFlow.id as callFlow.name group by callFlow.projectName for callFlow in callFlows">
+        </select>
+      </div>
+    </div>
+
+    <hr>
+
+    <span>Channels</span>
+    <div class='form-group field-block' ng-repeat="channel in schedule.channels">
+      <div class='control ui-multi'>
+        <input type='text' id='channel-{{$index}}' class='form-control' value="{{channel.name}}" />
+        <a ng-click='removeChannel($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
+      </div>
+    </div>
+
+    <div class='form-group field-block' ng-class="newChannel =='' ? 'has-error' : '' ">
+      <div class='control ui-multi'>
+        <select id="new_channel" 
+                class='form-control'
+                ng-model="newChannel" 
+                ng-options="channel.name for channel in channels"></select>
+
+
+        <a ng-click='addNewChannel()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
+      </div>
+    </div>
+
+
+    <hr />
+    <!-- Start on  -->
+    <p>
+      <div class='control ui-2-label' >
+        <span> Allow condition </span>
+        <br />
+        <toggle-switch
+              model="schedule.is_repeated"
+              class="switch-small"
+              on-label="Yes"
+              off-label="No" >
+        </toggle-switch>
+      </div>
+    </p>
+
+    <!-- ON -->
+    <div ng-show="schedule.is_repeated">
+      <div class='form-group field-block'>
+        <div class=' ui-form-multi'>
+          <input type='text' ng-model='schedule.conditions.value' class='form-control' />
+          <span>  </span>
+          <select ng-model='schedule.conditions.data_type'
+                  class='form-control'
+                  ng-options= 'value for value in DATE_TYPES' >
+          </select>
+          <span> After </span>
+        </div>
+      </div>
+
+      <!-- Project Variables -->
+      <div class='form-group field-block'>
+        <div class='control'>
+          <select id="project_variable" 
+            class='form-control'
+            ng-model="schedule.conditions.var_name" 
+            ng-options="variable.name for variable in variables">
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- OFF -->
+    <div ng-hide="schedule.is_repeated" class='form-group field-block calendar-form' ng-controller='CalendarController' >
+      <label class="control-label" for="project_variable">Start on (DD/MM/YYYY)</label>
+      <div class='control' >
+
+        <p class="input-group ui-multi">
+          <input type="text" 
+                 class="form-control" 
+                 datepicker-popup="{{format}}" 
+                 ng-model="schedule.start_date" 
+                 is-open="opened"
+                 datepicker-options="dateOptions"
+                 date-disabled="disabled(date, mode)"
+                 ng-required="true"
+                 close-text="Close" />
+
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open($event)">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <hr>
+    <!-- Schedule for -->
+    <div class='form-group field-block'>
+      <label class="control-label" > Schedule call time (HH:MM) </label>
+      <div class='control ui-2-label' >
+        <label class="label-inline" for="fromHour"> From </label>
+        <input ng-model='schedule.from' type='text' class='form-control' id='fromHour' />
+
+        <label class="label-inline" for="toHour"> To </label>
+        <input ng-model="schedule.to" type='text' class='form-control' id='toHour' />
+      </div>
+    </div>
+
+    <!-- Retries -->
+    <div class='form-group field-block'>
+      <p>
+        <label class="control-label" >
+          Retries if the call was not pick up.<br/>
+          Enter comma separated delays in hours 
+        </label>
+      </p>
+      <div class='control' >
+        <input ng-model='schedule.retries' type='text' class='form-control' id='retry' />
+      </div>
+    </div>
+
+    <div class='form-group field-block'>
+      <label> </label>
+      <div class='control'>
+        <button ng-click='save()' class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

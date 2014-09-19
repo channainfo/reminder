@@ -17,8 +17,17 @@ reminder.config(['$stateProvider', '$urlRouterProvider', function($stateProvider
       url: "/:groupId/edit",
       templateUrl: "reminder/templates/groups/edit.html"
     })
+
     .state('schedules', {
       url: "/schedules",
       templateUrl: "reminder/templates/schedules/index.html"
+    })
+     .state('schedules.new', {
+      url: "/new",
+      templateUrl: "reminder/templates/schedules/new.html"
+    })
+    .state('schedules.edit', {
+      url: "/:scheduleId/edit",
+      templateUrl: "reminder/templates/schedules/edit.html"
     })
 }]);

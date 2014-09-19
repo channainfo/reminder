@@ -1,6 +1,7 @@
 reminder.factory("Group", ["$resource", "Config", function($resource, Config){
 	var GroupModel = $resource( Config.host + "groups/:id", null, {
-    update: { method: 'PUT' }
+    update: { method: 'PUT' },
+    collection: { method: 'GET', isArray: true, url: Config.host + "groups/collection"  }
   });
 
   //custom method for Group resource
@@ -20,7 +21,6 @@ reminder.factory("Group", ["$resource", "Config", function($resource, Config){
         addresses: _self.addresses
       }
     }
-
   }
   return GroupModel;
 }])

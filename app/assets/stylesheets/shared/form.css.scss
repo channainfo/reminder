@@ -1,26 +1,57 @@
-$form-margin-left: 210px;
-	
+$form-margin-left: 270px;
+
+.form-group{
+	margin-bottom: 5px;
+}
 .form {
 	width: 600px;
+}
+
+.form-control{
+	display: inline !important;
+	padding: 3px !important;
+  height: 32px !important;
 }
 
 .field-block {
 	label {
 		display: block;
 		font-weight: normal;
+		margin-bottom: 0px !important;
 	}
 	.control {
 		display: block;
-		input[type=text] {
-	    width: 240px;
-	    margin-left: 10px;
-	  }
-
-	  input.ui-multi {
-	  	width: $form-margin-left !important;
+		input[type=text], select {
+	    width: 300px;
 	  }
 	}
 }
+
+
+
+.ui-multi {
+	input, select {
+		width: $form-margin-left !important;
+	}
+
+	a, button {
+		width: 30px;
+		padding: 5px;
+	}
+
+	.input-group-btn{
+		width: 10px !important;
+	}
+}
+
+.ui-form-multi {
+	input, select {
+		width: 120px;
+		margin-right: 10px;
+	}
+}
+
+
 
 .field {
 	label {
@@ -32,7 +63,7 @@ $form-margin-left: 210px;
 	.control {
 	  margin-left: $form-margin-left;
 	  input[type=text] {
-	    width: 240px;
+	    width: 300px;
 	  }
 
 	  input.ui-multi {
@@ -40,4 +71,20 @@ $form-margin-left: 210px;
 	  }
 	}
 	@include clear-after();
+}
+
+.label-inline {
+	display: inline !important;
+}
+
+.ui-2-label  {
+	label { 
+		display: inline !important;
+	}
+
+	input {
+		width: 120px !important;
+	}
+
+
 }

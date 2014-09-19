@@ -1,5 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "angular-toggle-switch-bootstrap-3";
 
 @import "base/mixin";
 @import "base/override";
@@ -7,4 +8,3 @@
 @import "shared/objects";
 @import "shared/nav";
 @import "shared/form";
-@import "shared/animate"

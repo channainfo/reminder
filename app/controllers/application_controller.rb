@@ -63,4 +63,8 @@ class ApplicationController < ActionController::Base
   def render_bad_request
     head :bad_request
   end
+
+  def default_serializer_options
+    {root: false}  
+  end 
 end

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.0'
+ruby '2.1.2'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -48,6 +48,7 @@ gem 'virtus'
 gem 'bootstrap-sass'
 
 gem "exception_handler"
+gem "active_model_serializers"
 
 #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 # gem 'bootstrap-sass', require: true
@@ -70,7 +71,7 @@ group :development do
   # gem 'capistrano-chruby', github: 'capistrano/chruby', require: false
 end
 
-# gem 'debugger', group: [:development, :test]
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -80,7 +81,7 @@ group :test, :development do
 
   gem 'rspec_api_documentation', github: 'zipmark/rspec_api_documentation'
   gem 'apitome'
-  gem 'debugger'
+  gem 'byebug'
 end
 
 group :test do
@@ -88,5 +89,6 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'simplecov', '~> 0.7.1', require: false
+  gem 'rails_karma'
 end
 

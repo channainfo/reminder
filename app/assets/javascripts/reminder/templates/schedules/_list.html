@@ -1,0 +1,41 @@
+<div class='pageTitle'>
+  <div id='schedule-index' class="animate-container">
+
+    <rm-add-bar title="'New Schedule'" url="'schedules.new'" ></rm-add-bar>
+
+    <div ng-repeat='schedule in schedules' class="panel panel-default animate-repeat">
+      <div class="panel-heading clearfix">
+        <div class="r-side bar-icon">
+          <a class="icon" ui-sref="schedules.edit({scheduleId: schedule.id})">
+            <span class="glyphicon glyphicon-pencil"> </span>
+          </a>
+
+          <a class="icon" href='' ng-click='remove(schedule)'>
+            <span class="glyphicon glyphicon-trash"> </span>
+          </a>
+        </div>
+        <div class="l-side bar-title">
+          {{schedule.findCallFlowIn(callFlows).projectName}}
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <p>
+          Call all contacts in
+          <b> {{schedule.findGroupIn(groups).name}} </b> reminder group with
+          <b> {{schedule.findCallFlowIn(callFlows).name}} </b> call flow using
+          <b> {{schedule.channelsAsText}} </b> channel(s)
+          
+          <!-- When Today - test = 1 day -->
+          <span ng-show="schedule.hasConditions()">
+            When Today -
+              {{schedule.conditions.var_name.name}}
+              {{schedule.conditions.operator}}
+              {{schedule.conditions.value}}
+              {{schedule.conditions.data_type}}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<div ng-controller="GroupController" ng-init="loadGroup()">
+<div ng-controller="GroupController" ng-init="init()">
   <form role="form">
     <div class='form-group field-block' ng-class="group.name == '' ? 'has-error' : '' ">
       <div> <label class="control-label" for="name"> Name </label></div>
@@ -14,7 +14,7 @@
 
     <div class='form-group field-block' ng-repeat="address in group.addresses">
       <div class='control'>
-        <input type='text' id='address-{{$index}}' class='ui-multi form-control' value="{{address}}" />
+        <input readonly="readonly" type='text' id='address-{{$index}}' class='ui-multi form-control' value="{{address}}" />
         <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
       </div>
     </div>

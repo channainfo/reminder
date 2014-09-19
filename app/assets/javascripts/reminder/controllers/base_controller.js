@@ -1,4 +1,4 @@
-reminder.controller("BaseController", ["$scope", "$location", function($scope, $location) {
+reminder.controller("BaseController", ["$scope", "$location", "$state", function($scope, $location, $state) {
   $scope.status = false;
   $scope.message = "";
   $scope.loading = false;
@@ -27,5 +27,9 @@ reminder.controller("BaseController", ["$scope", "$location", function($scope, $
 
   $scope.isMenuActive = function(path){
     return $scope.currentUrl.indexOf(path) != -1 ? " active" : ""
+  }
+
+  $scope.redirectTo = function(path){
+    $state.go(path);
   }
 }])

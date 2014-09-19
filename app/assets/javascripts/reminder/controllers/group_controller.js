@@ -1,47 +1,63 @@
 reminder
   .controller("GroupController", 
-	            ["$scope", "Group", "EntityManager", "$stateParams", "$state",
-	            function($scope, Group, EntityManager, $stateParams, $state){
+	            ["$scope", "Group", "EntityManager", "$stateParams",
+	            function($scope, Group, EntityManager, $stateParams){
 
 	$scope.resetForm = function(){
-		$scope.group = new Group({name: '', addresses: [] })
+		$scope.setDefaultData();
+	}
+
+	$scope.setDefaultData = function(){
+		$scope.group = new Group({name: '', addresses: [], id: 0 });
 		$scope.newAddress = "";
 	}
-	$scope.resetForm();
 
-	$scope.loadGroup = function() {
+	$scope.init = function() {
+		$scope.setDefaultData();
+		if(!$stateParams.groupId)
+			return;
 		$scope.fetchGroup();
 	}
 
 	$scope.fetchGroup = function() {
-		if(!$stateParams.groupId) return;
-
 		Group.get({id: $stateParams.groupId}, function(group){
 			$scope.group = group;
 		}, function() {
-			$state.go("groups");
+			$scope.redirectTo("groups");
 		})
 	}
+
+  $scope.replace = function(group) {
+    var index = $scope.groups.indexOfElement(group, function(group, e){
+      return group.id == e.id
+    })
+
+    if(index != -1)
+      $scope.groups.splice(index, 1, group);
+    else
+  		$scope.groups.unshift(group);
+  }
 
 	$scope.save = function(){
 		$scope.implicitNewAddress();
 		$scope.setLoadingStatus(true);
 
-		EntityManager.getEntityFor(Group).save($scope.group)
-			.$promise
-			.then($scope.saveSuccess, $scope.saveFailed);
-	}
+		var successCallback = function(group){
+			$scope.setLoadingStatus(false);
+			$scope.replace(group);
 
-	$scope.saveSuccess = function(group){
-		$scope.setLoadingStatus(false);
-	  $scope.groups.unshift(group);
-	  $scope.resetForm();
-	  $scope.setSuccess("Group has been saved");
-	}
+			$scope.resetForm();
+			$scope.setSuccess("Group has been saved");
+			$scope.redirectTo("groups");
+		}
 
-	$scope.saveFailed = function(){
-		$scope.setLoadingStatus(false);
-		$scope.setFailure("Couldn't save group");
+		var errorCallback = function(){
+			$scope.setLoadingStatus(false);
+			$scope.setFailure("Couldn't save group");
+		}
+
+		entity = EntityManager.getEntityFor(Group);
+		entity.save($scope.group, successCallback, errorCallback);
 	}
 
 	$scope.implicitNewAddress = function() {

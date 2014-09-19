@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917035355) do
+ActiveRecord::Schema.define(version: 20141022081933) do
 
   create_table "groups", force: true do |t|
     t.string   "name"
@@ -28,5 +28,22 @@ ActiveRecord::Schema.define(version: 20140917035355) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "schedules", force: true do |t|
+    t.integer  "group_id"
+    t.text     "channels"
+    t.integer  "call_flow_id"
+    t.date     "start_date"
+    t.text     "conditions"
+    t.string   "from"
+    t.string   "to"
+    t.string   "retries"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id"
+    t.boolean  "is_repeated",  default: false
+  end
+
+  add_index "schedules", ["account_id"], name: "index_schedules_on_account_id", using: :btree
 
 end

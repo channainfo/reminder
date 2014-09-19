@@ -1,6 +1,10 @@
 class GroupsController < ApplicationController
   def index
-    render json: Group.all.order("id desc")
+    render json: Group.all
+  end
+
+  def collection
+    render json: Group.all, each_serializer: GroupInfoSerializer
   end
 
   def show

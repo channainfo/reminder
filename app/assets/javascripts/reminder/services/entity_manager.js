@@ -1,11 +1,15 @@
 function Entity(klass) {
   this.klass = klass;
 
-  this.save  = function(resource) {
-    if (parseInt(resource.id)>0)
-      return this.klass.update({id: resource.id}, resource.toParams());
+  this.isNewRecord = function(resource) {
+    return parseInt(resource.id) == 0;
+  }
+
+  this.save  = function(resource, success, error) {
+    if (this.isNewRecord(resource))
+      return this.klass.save(resource.toParams(), success, error);
     else
-      return this.klass.save(resource.toParams());
+      return this.klass.update({id: resource.id}, resource.toParams(), success, error);
   }
 }
 
