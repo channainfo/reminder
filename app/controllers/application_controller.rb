@@ -59,4 +59,8 @@ class ApplicationController < ActionController::Base
     options[:account_id] = current_account.id
     options
   end
+
+  def render_bad_request
+    head :bad_request
+  end
 end

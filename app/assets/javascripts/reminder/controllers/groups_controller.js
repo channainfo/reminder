@@ -1,4 +1,7 @@
-reminder.controller("GroupsController", ["$scope", "Group", function($scope, Group){
+reminder.controller("GroupsController", 
+                  ["$scope", "Group", "$state",
+                  function($scope, Group, $state){
+
   $scope.groups = [];
 
   $scope.init = function(){
@@ -18,12 +21,12 @@ reminder.controller("GroupsController", ["$scope", "Group", function($scope, Gro
           $scope.groups.splice(index, 1);
 
         $scope.setSuccess("Group has been removed");
+        $state.go("groups");
       },
       function(){
         $scope.setLoadingStatus(false);
         $scope.setFailure("Couldn't remove group");
       }
-
     );
   }
 }])
