@@ -1,7 +1,14 @@
-reminder.controller("BaseController", ["$scope", function($scope) {
+reminder.controller("BaseController", ["$scope", "$location", function($scope, $location) {
   $scope.status = false;
   $scope.message = "";
   $scope.loading = false;
+  $scope.currentUrl = "";
+
+  $scope.init = function() {
+    $scope.$on('$locationChangeStart', function(event) {
+      $scope.currentUrl = $location.url();
+    });
+  }
 
   $scope.setSuccess = function(msg) {
     $scope.status = "success";
@@ -18,4 +25,7 @@ reminder.controller("BaseController", ["$scope", function($scope) {
     $scope.loading = status;
   }
 
+  $scope.isMenuActive = function(path){
+    return $scope.currentUrl.indexOf(path) != -1 ? " active" : ""
+  }
 }])
