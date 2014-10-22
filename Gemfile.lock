@@ -166,6 +166,7 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.1)
       sprockets-rails (~> 2.0)
+    rails_karma (0.1.0)
     railties (4.1.1)
       actionpack (= 4.1.1)
       activesupport (= 4.1.1)
@@ -287,6 +288,7 @@ DEPENDENCIES
   mysql2
   poltergeist
   rails (= 4.1.1)
+  rails_karma
   rspec-rails
   rspec_api_documentation!
   sass-rails (~> 4.0.3)
