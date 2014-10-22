@@ -32,4 +32,5 @@ reminder.controller("BaseController", ["$scope", "$location", "$state", function
   $scope.redirectTo = function(path){
     $state.go(path);
   }
+
 }])

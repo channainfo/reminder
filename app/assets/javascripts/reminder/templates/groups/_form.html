@@ -13,14 +13,14 @@
     </div>
 
     <div class='form-group field-block' ng-repeat="address in group.addresses">
-      <div class='control'>
+      <div class='control ui-multi'>
         <input readonly="readonly" type='text' id='address-{{$index}}' class='ui-multi form-control' value="{{address}}" />
         <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
       </div>
     </div>
 
     <div class='form-group field-block' ng-class="newAddress =='' ? 'has-error' : '' ">
-      <div class='control'>
+      <div class='control ui-multi'>
         <input type='text' id="new_address" ng-model="newAddress" class='ui-multi form-control' />
         <a ng-click='addNewAddress()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
       </div>
@@ -30,6 +30,7 @@
       <label> </label>
       <div class='control'>
         <button ng-click='save()' class="btn btn-primary">Save</button>
+        <button ui-sref='groups' class="btn btn-default">Cancel</button>
       </div>
     </div>
   </form>

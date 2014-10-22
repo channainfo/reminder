@@ -1,31 +1,47 @@
 reminder
   .controller("ScheduleController", 
-              ["$scope", "$stateParams", "Schedule", "Group", "Channel", "EntityManager", 
-              function($scope, $stateParams, Schedule, Group, Channel, EntityManager){
-
+              ["$scope", "$stateParams", "Project", "Schedule", "Group", "Channel", "EntityManager", "ScheduleHelper", 
+              function($scope, $stateParams, Project, Schedule, Group, Channel, EntityManager, ScheduleHelper){
 
   $scope.DATE_TYPES = ["Day", "Week", "Month", "Year"];
 
+
+  $scope.groups            = [];
+  $scope.channels          = [];
+  $scope.projects          = [];
+
+  $scope.loadReferences = function(){
+    ScheduleHelper.loadTo($scope, {
+      projects: true,
+      channels: true,
+      groups: true
+    });
+  }
+
   $scope.init = function() {
+    $scope.loadReferences();
     $scope.setDefaultData();
-    if(!$stateParams.scheduleId)
-      return;
-    $scope.fetchSchedule();
+
+    //load schedule if edit action
+    if($stateParams.scheduleId){
+      setTimeout(function(){
+         $scope.loadSchedule($stateParams.scheduleId);
+       }, 300);
+    }
   }
 
-  $scope.fetchSchedule = function() {
-    var success = function(schedule){
-      $scope.schedule = schedule;
-    };
-
-    var error = function() {
-      $scope.redirectTo("schedules");
-    };
-
-    Schedule.get({id: $stateParams.scheduleId}, success, error);
+  $scope.loadSchedule = function(id) {
+    Schedule.get({id: id},
+      function(schedule){
+        $scope.schedule = schedule;
+      }, 
+      function() {
+        $scope.redirectTo("schedules");
+      }
+    );
   }
 
-  $scope.setDefaultData = function(){
+  $scope.setDefaultSchedule = function(){
     $scope.schedule = new Schedule({
       id: 0,
       group_id: 0,
@@ -40,41 +56,34 @@ reminder
                     operator: "=",
                     value: "",
                     data_type: "DAY" }
-    })
+    });
+  }
+
+  $scope.setDefaultData = function(){
+    $scope.setDefaultSchedule();
     $scope.newChannel = null;
     $scope.startDate    = new Date();
   }
 
-  $scope.resetForm = function(){
-    $scope.setDefaultData();
-  }
-
   $scope.filterVariables = function(){
     var callFlow = $scope.schedule.findCallFlowIn($scope.callFlows);
-    
-    $scope.variables = $scope.projectVariables.filter(callFlow.projectName, function(projectName, variable) {
-      return variable.projectName == projectName;
-    });
+    if(callFlow) {
+      $scope.variables = $scope.projectVariables.filter(callFlow.projectName, function(projectName, variable) {
+        return variable.projectName == projectName;
+      });
+    }
   };
 
-  $scope.replace = function(schedule) {
-    var index = $scope.schedules.indexOfElement(schedule, function(schedule, e){
-      return schedule.id == e.id
-    })
-
-    if(index != -1)
-      $scope.schedules.splice(index, 1, schedule);
-    else
-      $scope.schedules.unshift(schedule);
-  }
+  $scope.$watch('schedule.call_flow_id', function(newVal, oldVal){ 
+    if(newVal !=0)
+      $scope.filterVariables();
+  })
 
   $scope.save = function(){
     $scope.setLoadingStatus(true);
 
     var success = function(schedule){
-      $scope.setLoadingStatus(false);
-      $scope.replace(schedule);
-
+      $scope.setLoadingStatus(false)
       $scope.setSuccess("Schedule has been saved");
       $scope.redirectTo("schedules");
     }

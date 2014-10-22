@@ -1,7 +1,7 @@
 reminder.controller("GroupsController", 
                   ["$scope", "Group",
                   function($scope, Group){
-
+  $scope.editingMode = false;
   $scope.groups = [];
 
   $scope.init = function(){

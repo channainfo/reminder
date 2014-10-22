@@ -2,7 +2,7 @@ function Entity(klass) {
   this.klass = klass;
 
   this.isNewRecord = function(resource) {
-    return parseInt(resource.id) == 0;
+    return resource == undefined || parseInt(resource.id) == 0;
   }
 
   this.save  = function(resource, success, error) {
@@ -13,11 +13,14 @@ function Entity(klass) {
   }
 }
 
-reminder.factory("EntityManager", ["Group", function(Group){
+reminder.factory("EntityManager", ["Group", "Schedule" , function(Group, Schedule){
   return {
     entity: null,
     getEntityFor: function(modelClass) {
-      this.entity = new Entity(modelClass);
+      if(this.entity && this.entity.klass != modelClass)
+        this.entity.klass = modelClass;
+      else if(this.entity == null)
+        this.entity = new Entity(modelClass);
       return this.entity;
     }
   }

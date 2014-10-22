@@ -1,13 +1,7 @@
-<div ng-include src="'reminder/templates/shared/alert.html'"> </div>
+<div class="form-container">
+  <div ng-include src="'reminder/templates/shared/alert.html'"> </div>
 
-<div class="row" ng-controller="GroupsController" ng-init="init()">
-	<div class="col-sm-6">
-		<div ng-include src="'reminder/templates/groups/_list.html'"> </div>
-	</div>
-
-	<div class="col-sm-2" />
-
-	<div class="col-sm-4">
-		<div ui-view class='slide-animation'></div>
-	</div>
+  <div ng-controller="GroupsController" ng-init="init()">
+    <div ng-include src="'reminder/templates/groups/_list.html'"> </div>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 reminder.controller("SchedulesController", 
-                  ["$scope", "$state", "Project", "Schedule", "Group", "Channel",
-                  function($scope, $state, Project, Schedule, Group, Channel){
+                  ["$scope", "$state", "Project", "Schedule", "Group", "Channel", "ScheduleHelper",
+                  function($scope, $state, Project, Schedule, Group, Channel, ScheduleHelper){
 
   $scope.groups            = [];
   $scope.schedules         = [];
@@ -11,23 +11,12 @@ reminder.controller("SchedulesController",
   $scope.projectVariables  = [];
 
   $scope.init = function(){
-
-    Channel.query({}, function(channels) {
-      $scope.channels = channels;
+    ScheduleHelper.loadTo($scope, {
+      projects: true,
+      channels: true,
+      schedules: true,
+      groups: true
     });
-
-    Project.query({}, function(projects) {
-      $scope.projects = projects;
-      $scope._fillCallFlowsAndVariables();
-    });
-
-    Group.collection({}, function(groups) {
-      $scope.groups = groups;
-    });
-
-    Schedule.query().$promise.then(function(schedules){
-      $scope.schedules = schedules;
-    })
   }
 
   $scope.remove = function(schedule) {
@@ -50,21 +39,4 @@ reminder.controller("SchedulesController",
     );
   }
 
-  $scope._fillCallFlowsAndVariables = function(){
-    $scope.callFlows = [];
-    $scope.projectVariables = [];
-
-    $.each($scope.projects, function(_, project){
-      
-      $.each(project.project_variables, function(_, variable){
-        variable.projectName = project.name;
-        $scope.projectVariables.push(variable);
-      });
-
-      $.each(project.call_flows, function(_, callFlow){
-        callFlow.projectName = project.name;
-        $scope.callFlows.push(callFlow);
-      });
-    });
-  }
 }])

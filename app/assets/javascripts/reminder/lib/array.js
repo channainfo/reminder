@@ -34,4 +34,10 @@ Array.prototype.map = function(func) {
   return results;
 }
 
+Array.prototype.each = function(func) {
+  for(var i = 0; i < this.length; i++)
+    func(this[i]);
+}
+
+
 Array.prototype.select = Array.prototype.filter;

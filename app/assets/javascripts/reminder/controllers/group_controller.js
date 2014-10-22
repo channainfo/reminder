@@ -27,26 +27,12 @@ reminder
 		})
 	}
 
-  $scope.replace = function(group) {
-    var index = $scope.groups.indexOfElement(group, function(group, e){
-      return group.id == e.id
-    })
-
-    if(index != -1)
-      $scope.groups.splice(index, 1, group);
-    else
-  		$scope.groups.unshift(group);
-  }
-
 	$scope.save = function(){
 		$scope.implicitNewAddress();
 		$scope.setLoadingStatus(true);
 
 		var successCallback = function(group){
 			$scope.setLoadingStatus(false);
-			$scope.replace(group);
-
-			$scope.resetForm();
 			$scope.setSuccess("Group has been saved");
 			$scope.redirectTo("groups");
 		}

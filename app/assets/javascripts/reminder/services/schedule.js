@@ -36,7 +36,7 @@ reminder.factory("Schedule", ["$resource", "Config", function($resource, Config)
   }
 
   ScheduleModel.prototype.channelsAsText = function(){
-    var results = $scope.channels.map(function(channel){
+    var results = this.channels.map(function(channel){
       return channel.name
     });
     return results.join(", ")
@@ -46,6 +46,5 @@ reminder.factory("Schedule", ["$resource", "Config", function($resource, Config)
     var _self = this;
     return !jQuery.isEmptyObject(_self.conditions.var_name)
   }
-
   return ScheduleModel;
 }])
