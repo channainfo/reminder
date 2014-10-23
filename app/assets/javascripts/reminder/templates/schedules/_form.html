@@ -1,10 +1,9 @@
 <div ng-controller="ScheduleController" ng-init="init()">
   <form role="form">
 
-    <input type='hidden' ng-model="schedule.id" />
-
     <!-- Group -->
-    <div class='form-group field-block'>
+    <div class='form-group field-block' 
+         ng-class="schedule.group_id ? '': 'has-error' ">
       <label class="control-label" for="group">Group</label>
       <div class='control'>
         <select id="group" 
@@ -15,7 +14,8 @@
     </div>
 
     <!-- Call flow -->
-    <div class='form-group field-block' >
+    <div class='form-group field-block clearfix'
+         ng-class="schedule.call_flow_id > 0 ? '' : 'has-error' " >
       <label class="control-label" for="call_flow">Call flow</label>
       <div class='control'>
         <select id="call_flow" 
@@ -27,24 +27,34 @@
     </div>
 
     <hr>
-
-    <span>Channels</span>
-    <div class='form-group field-block' ng-repeat="channel in schedule.channels">
-      <div class='control ui-multi'>
-        <input readonly="readonly" type='text' id='channel-{{$index}}' class='form-control' value="{{channel.name}}" />
-        <a ng-click='removeChannel($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
+    <div class='' ng-class="schedule.channels.length > 0 ? '' : 'has-error' " >
+      <span>Channels</span>
+      
+      <div class='form-group field-block' ng-repeat="channel in schedule.channels">
+        <div class='control ui-multi'>
+          <input readonly="readonly" type='text' id='channel-{{$index}}' 
+                 class='form-control' value="{{channel.name}}" />
+          <a ng-click='removeChannel($index)' 
+             class="btn btn-xs btn-danger glyphicon glyphicon-minus"> 
+          </a>
+        </div>
       </div>
+
     </div>
 
-    <div class='form-group field-block' ng-class="newChannel =='' ? 'has-error' : '' ">
+
+    <div class='form-group field-block' 
+         ng-class="schedule.channels.length ? '' : 'has-error' ">
       <div class='control ui-multi'>
         <select id="new_channel" 
                 class='form-control'
                 ng-model="newChannel" 
-                ng-options="channel.name for channel in channels"></select>
+                ng-options="channel.name for channel in channels">
+        </select>
 
-
-        <a ng-click='addNewChannel()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
+        <a ng-click='addNewChannel()' 
+           class="btn btn-xs btn-primary glyphicon glyphicon-plus">
+        </a>
       </div>
     </div>
 
@@ -66,32 +76,41 @@
 
     <!-- ON -->
     <div ng-show="schedule.is_repeated">
-      <div class='form-group field-block'>
+      <div class='form-group field-block' >
         <div class=' ui-form-multi'>
-          <input type='text' ng-model='schedule.conditions.value' class='form-control' />
+
+          <span ng-class="isValueValid() ? '' : 'has-error' " > 
+            <input type='text' class='form-control' ng-model='schedule.conditions.value' />
+          </span>
+
           <span>  </span>
-          <select ng-model='schedule.conditions.data_type'
-                  class='form-control'
-                  ng-options= 'value for value in DATE_TYPES' >
-          </select>
+
+          <span ng-class="isDataTypeValid() ? '' : 'has-error' "> 
+            <select class='form-control'
+                    ng-model='schedule.conditions.data_type'
+                    ng-options= 'value for value in DATE_TYPES' >
+            </select>
+          </span>
           <span> After </span>
         </div>
       </div>
 
       <!-- Project Variables -->
-      <div class='form-group field-block'>
+      <div class='form-group field-block'
+           ng-class="isVariableValid() ? '': 'has-error'">
         <div class='control'>
           <select id="project_variable" 
-            class='form-control'
-            ng-model="schedule.conditions.var_name.name" 
-            ng-options="variable.name as variable.name for variable in variables">
+                  class='form-control'
+                  ng-model="schedule.conditions.var_name.name" 
+                  ng-options="variable.name as variable.name for variable in variables">
           </select>
         </div>
       </div>
     </div>
 
     <!-- OFF -->
-    <div ng-hide="schedule.is_repeated" class='form-group field-block calendar-form' ng-controller='CalendarController' >
+    <div ng-hide="schedule.is_repeated" class='form-group field-block calendar-form' 
+         ng-controller='CalendarController' >
       <label class="control-label" for="project_variable">Start on (DD/MM/YYYY)</label>
       <div class='control' >
 
@@ -120,11 +139,16 @@
     <div class='form-group field-block'>
       <label class="control-label" > Schedule call time (HH:MM) </label>
       <div class='control ui-2-label' >
-        <label class="label-inline" for="fromHour"> From </label>
-        <input ng-model='schedule.from' type='text' class='form-control' id='fromHour' />
+        <span ng-class="isFromValid() ? '': 'has-error' ">
+          <label class="label-inline" for="fromHour"> From </label>
+          <input ng-model='schedule.from' type='text' class='form-control' id='fromHour' />
+        </span>
 
-        <label class="label-inline" for="toHour"> To </label>
-        <input ng-model="schedule.to" type='text' class='form-control' id='toHour' />
+        <span ng-class="isToValid() ? '': 'has-error' ">
+          <label class="label-inline" for="toHour"> To </label>
+          <input ng-model="schedule.to" type='text' class='form-control' id='toHour' />
+        </span>
+
       </div>
     </div>
 
@@ -136,7 +160,8 @@
           Enter comma separated delays in hours 
         </label>
       </p>
-      <div class='control' >
+      <div class='control' 
+           ng-class="isRetryValid() ? '' : 'has-error' " >
         <input ng-model='schedule.retries' type='text' class='form-control' id='retry' />
       </div>
     </div>
@@ -144,8 +169,12 @@
     <div class='form-group field-block'>
       <label> </label>
       <div class='control'>
-        <button ng-click='save()' class="btn btn-primary">Save</button>
-        <button ui-sref='schedules' class="btn btn-default">Cancel</button>
+        <button class="btn btn-primary"
+                ng-click='save()'
+                ng-disabled ='!isValid()' >
+          Save
+        </button>
+        <button class="btn btn-default" ui-sref='schedules' >Cancel</button>
       </div>
     </div>
   </form>

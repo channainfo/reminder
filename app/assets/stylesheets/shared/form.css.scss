@@ -27,8 +27,6 @@ $form-margin-left: 270px;
 	}
 }
 
-
-
 .ui-multi {
 	input, select {
 		width: $form-margin-left !important;
@@ -43,6 +41,7 @@ $form-margin-left: 270px;
 
 	.input-group-btn{
 		width: 10px !important;
+		padding-top: 4px;
 	}
 }
 
@@ -87,6 +86,11 @@ $form-margin-left: 270px;
 	input {
 		width: 120px !important;
 	}
+}
 
-
+.has-error {
+	color: #a94442 !important;
+	input, select {
+		border: 1px solid #a94442 !important;
+	}
 }

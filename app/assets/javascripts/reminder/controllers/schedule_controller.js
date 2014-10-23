@@ -55,7 +55,7 @@ reminder
       conditions: { var_name: {},
                     operator: "=",
                     value: "",
-                    data_type: "DAY" }
+                    data_type: "" }
     });
   }
 
@@ -113,6 +113,53 @@ reminder
 
   $scope.removeChannel = function(index){
     $scope.schedule.channels.splice(index, 1);
+  }
+
+  $scope.isValid = function(){
+    var valid = $scope.schedule.group_id &&
+                $scope.schedule.call_flow_id &&
+                $scope.schedule.channels.length
+
+    if($scope.schedule.is_repeated){
+      valid = valid && 
+              $scope.isValueValid() && 
+              $scope.isVariableValid &&
+              $scope.isDataTypeValid();
+    }
+    else {
+      valid = $scope.isFromValid() && $scope.isToValid();
+
+    }
+
+    return valid && $scope.isRetryValid()
+  }
+
+  $scope.isValueValid = function(){
+    return $scope.schedule.conditions && $scope.schedule.conditions.value;
+  }
+
+  $scope.isDataTypeValid = function(){
+    return $scope.schedule.conditions && $scope.schedule.conditions.data_type;
+  }
+
+  $scope.isVariableValid = function(){
+    return $scope.schedule.conditions && 
+           $scope.schedule.conditions.var_name &&
+           $scope.schedule.conditions.var_name.name;
+  }
+
+  $scope.isRetryValid = function(){
+    if($scope.schedule.retries)
+       return $scope.schedule.retries.isCommaSeparatedNumber()
+    return true
+  }
+
+  $scope.isFromValid = function(){
+    return $scope.schedule.from.isHourFormat();
+  }
+
+  $scope.isToValid = function(){
+    return $scope.schedule.to.isHourFormat();
   }
 
 }])
