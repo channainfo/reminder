@@ -28,7 +28,6 @@ reminder
 	}
 
 	$scope.save = function(){
-		$scope.implicitNewAddress();
 		$scope.setLoadingStatus(true);
 
 		var successCallback = function(group){
@@ -46,11 +45,6 @@ reminder
 		entity.save($scope.group, successCallback, errorCallback);
 	}
 
-	$scope.implicitNewAddress = function() {
-		if($scope.newAddress != "")
-			$scope.group.addresses.push($scope.newAddress);
-	}
-
 	$scope.addNewAddress = function() {
 		if($scope.newAddress) {
 			$scope.group.addresses.push($scope.newAddress);
@@ -61,4 +55,15 @@ reminder
 	$scope.removeAddress = function(index){
 		$scope.group.addresses.splice(index, 1);
 	}
+
+	$scope.isValid = function() {
+		return $scope.group.name;
+	}
+
+	$scope.isNewAddressValid = function(){
+		if($scope.newAddress)
+			return $scope.newAddress.isPhoneNumber();
+		return true;
+	}
+
 }])
