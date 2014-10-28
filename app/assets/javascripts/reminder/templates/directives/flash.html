@@ -1,0 +1,7 @@
+<div class="alert alert-dismissible" role="alert" 
+     ng-show="flashMessage()"
+     ng-class="flashStatus() == 'success' ? 'alert-success' : 'alert-danger'">
+
+  <strong>{{flashStatus() == 'success' ? 'Success' : 'Failed'}}!</strong>
+  {{flushFlashMessage()}}
+</div>

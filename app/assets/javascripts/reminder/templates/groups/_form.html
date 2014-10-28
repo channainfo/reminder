@@ -3,8 +3,7 @@
     <div class='form-group field-block' ng-class="group.name == '' ? 'has-error' : '' ">
       <div> <label class="control-label" for="name"> Name </label></div>
       <div class='control'>
-       <input type='text' id="name" ng-model="group.name" class="form-control" />
-       <input type='hidden' ng-model="group.id" />
+       <input autocomplete="off" type='text' id="name" ng-model="group.name" class="form-control" />
       </div>
     </div>
 
@@ -24,14 +23,15 @@
     <div class='form-group field-block'>
       <div class='control ui-multi'>
         <span ng-class="isNewAddressValid() ? '' : 'has-error' ">
-          <input type='text' id="new_address" 
+          <input autocomplete="off" type='text' id="new_address" 
                  class='ui-multi form-control'
                  ng-model="newAddress" />
         </span>
-        <a class="btn btn-xs btn-primary glyphicon glyphicon-plus"
+
+        <button class="btn btn-xs btn-primary glyphicon glyphicon-plus"
            ng-click='addNewAddress()'
            ng-disabled='!isNewAddressValid() || !newAddress' >
-        </a>
+        </button>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
                 ng-disabled="!isValid()" >
                 Save
         </button>
-        <button ui-sref='groups' class="btn btn-default">Cancel</button>
+        <a ui-sref="groups({projectId: params('projectId')})" class="btn btn-default">Cancel</a>
       </div>
     </div>
   </form>

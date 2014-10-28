@@ -12,7 +12,7 @@ class Session
 
     if response.success?
       @@success = true
-      Service::Account.new(JSON.parse(response.body, symbolize_names: true))
+      Api::Account.new(JSON.parse(response.body, symbolize_names: true))
     else
       @@success = false
       if response.code == 401 

@@ -1,11 +1,13 @@
 reminder.factory("Schedule", ["$resource", "Config", function($resource, Config){
-  var ScheduleModel = $resource( Config.host + "schedules/:id", null, {
-    update: { method: 'PUT' }
+  var ScheduleModel = $resource( Config.host + "projects/:project_id/schedules/:id", null, {
+    update: { method: 'PUT' },
+    create: { method: 'POST'}
   });
 
   // custom method for Schedule resource
   ScheduleModel.prototype.toParams = function(){
     var _self = this;
+    if(_self.hasConditions()) _self.conditions[0].operator = "="
     return {
       schedule: {
         group_id: _self.group_id,
@@ -16,7 +18,8 @@ reminder.factory("Schedule", ["$resource", "Config", function($resource, Config)
         to: _self.to,
         conditions: _self.conditions,
         retries: _self.retries,
-        is_repeated: _self.is_repeated
+        is_repeated: _self.is_repeated,
+        project_id: _self.project_id
       }
     }
   }
@@ -43,8 +46,7 @@ reminder.factory("Schedule", ["$resource", "Config", function($resource, Config)
   };
 
   ScheduleModel.prototype.hasConditions = function(){
-    var _self = this;
-    return !jQuery.isEmptyObject(_self.conditions.var_name)
+    return this.conditions.length > 0
   }
   return ScheduleModel;
 }])

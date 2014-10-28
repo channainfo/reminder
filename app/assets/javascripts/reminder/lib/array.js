@@ -1,10 +1,14 @@
 Array.prototype.indexOfElement = function(search, func) {
-
   for(var i = 0; i < this.length; i++) {
-    if(func(search, this[i]))
+    var result = func(search, this[i]);
+    if(result)
        return i;
   }
   return -1;
+}
+
+Array.prototype.hasElement = function(search, func){
+  return this.indexOfElement(search, func) != -1
 }
 
 Array.prototype.findElement = function(search, func) {

@@ -1,6 +1,10 @@
 class SchedulesController < ApplicationController
   def index
-    render json: Schedule.all.order("id desc")
+    schedules = Schedule.all
+    if params[:project_id].present?
+      schedules = schedules.where(project_id: params[:project_id])
+    end
+    render json: schedules
   end
 
   def show
@@ -10,8 +14,8 @@ class SchedulesController < ApplicationController
 
   def create
     schedule = Schedule.new(protected_params)
-    schedule.conditions = params[:schedule][:conditions]
-    schedule.channels   = params[:schedule][:channels]
+    schedule.conditions = params[:schedule][:conditions] || []
+    schedule.channels   = params[:schedule][:channels] || []
 
     if schedule.save
       render json: schedule, status: 201
@@ -22,8 +26,8 @@ class SchedulesController < ApplicationController
 
   def update
     schedule = Schedule.find(params[:id])
-    schedule.conditions = params[:schedule][:conditions]
-    schedule.channels   = params[:schedule][:channels]
+    schedule.conditions = params[:schedule][:conditions] || []
+    schedule.channels   = params[:schedule][:channels] || []
 
     if schedule.update_attributes(protected_params)
       render json: schedule
@@ -45,9 +49,9 @@ class SchedulesController < ApplicationController
 
   private
   def protected_params
-    attrs = params.require(:schedule).permit(:group_id,
+    attrs = params.require(:schedule).permit(:group_id, :project_id,
                   :call_flow_id, :start_date, :from,
-                  :to, :retries, :is_repeated, channels: [])
+                  :to, :retries, :is_repeated)
 
     inject_params(attrs)
   end

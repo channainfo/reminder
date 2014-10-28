@@ -7,9 +7,9 @@ function Entity(klass) {
 
   this.save  = function(resource, success, error) {
     if (this.isNewRecord(resource))
-      return this.klass.save(resource.toParams(), success, error);
+      return this.klass.create({project_id: resource.project_id}, resource.toParams(), success, error);
     else
-      return this.klass.update({id: resource.id}, resource.toParams(), success, error);
+      return this.klass.update({project_id: resource.project_id, id: resource.id}, resource.toParams(), success, error);
   }
 }
 
