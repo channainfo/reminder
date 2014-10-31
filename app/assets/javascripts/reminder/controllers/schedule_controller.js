@@ -3,10 +3,28 @@ reminder
               ["$scope", "Project", "Schedule", "Group", "Channel", "EntityManager", "Loader", 
               function($scope, Project, Schedule, Group, Channel, EntityManager, Loader){
 
+  $scope.newChannel = null;
+  $scope.startDate    = new Date();
+  $scope.schedule = new Schedule({
+    id: 0,
+    project_id: $scope.params("projectId"),
+    group_id: 0,
+    channels: [],
+    call_flow_id: 0,
+    start_date: new Date(),
+    from: "",
+    to: "",
+    retries: "",
+    is_repeated: false,
+    conditions: []
+  });
+
   $scope.DATE_TYPES = ["Day", "Week", "Month", "Year"];
 
   $scope.groups            = [];
   $scope.channels          = [];
+
+
 
   $scope.loadReferences = function(){
     Loader.fetchTo($scope, {
@@ -17,8 +35,6 @@ reminder
 
   $scope.init = function() {
     $scope.loadReferences();
-    $scope.setDefaultData();
-
     //load schedule if edit action
     if($scope.params("scheduleId"))
       $scope.loadSchedule($scope.params("scheduleId"));
@@ -39,29 +55,7 @@ reminder
       }
     );
   }
-
-  $scope.setDefaultSchedule = function(){
-    $scope.schedule = new Schedule({
-      id: 0,
-      project_id: $scope.params("projectId"),
-      group_id: 0,
-      channels: [],
-      call_flow_id: 0,
-      start_date: new Date(),
-      from: "",
-      to: "",
-      retries: "",
-      is_repeated: false,
-      conditions: []
-    });
-  }
-
-  $scope.setDefaultData = function(){
-    $scope.setDefaultSchedule();
-    $scope.newChannel = null;
-    $scope.startDate    = new Date();
-  }
-
+  
   $scope.save = function(){
     $scope.setLoading(true);
     var success = function(schedule){

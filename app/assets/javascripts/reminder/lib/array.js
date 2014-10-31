@@ -7,6 +7,15 @@ Array.prototype.indexOfElement = function(search, func) {
   return -1;
 }
 
+Array.prototype.removeElement = function(search, func){
+  var index = this.indexOfElement(search, func);
+  if(index != -1) {
+    var remove = this.splice(index, 1);
+    return remove[0];
+  }
+  return null;
+}
+
 Array.prototype.hasElement = function(search, func){
   return this.indexOfElement(search, func) != -1
 }

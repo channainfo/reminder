@@ -1,6 +1,6 @@
 reminder.controller("GroupsController", 
-                  ["$scope", "$timeout", "$state", "Group", "Loader",
-                  function($scope, $timeout, $state, Group, Loader){
+                  ["$scope", "Group",
+                  function($scope, Group){
 
   $scope.editingMode = false;
   $scope.groups = [];
@@ -22,9 +22,9 @@ reminder.controller("GroupsController",
   $scope.removeGroup = function(group){
     var successCallback = function(){
       $scope.setLoading(false);
-      var index = $scope.groups.indexOf(group);
-      if(index != -1)
-        $scope.groups.splice(index, 1);
+      $scope.groups.removeElement(group, function(search, group){
+         return search.id == group.id
+      });
 
       $scope.setFlashSuccess("Group has been removed");
       $scope.redirectTo("groups", {projectId: $scope.params("projectId")});

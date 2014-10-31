@@ -3,14 +3,10 @@ reminder
 	            ["$scope", "Group", "EntityManager",
 	            function($scope, Group, EntityManager){
 
-
-	$scope.setDefaultData = function(){
-		$scope.group = new Group({id:0, project_id: $scope.params("projectId"), name: '', addresses: []});
-		$scope.newAddress = "";
-	}
+	$scope.group = new Group({id:0, project_id: $scope.params("projectId"), name: '', addresses: []});
+	$scope.newAddress = "";
 
 	$scope.init = function() {
-		$scope.setDefaultData();
 		if(!$scope.params("groupId"))
 			return;
 		$scope.fetchGroup();

@@ -2,7 +2,7 @@ function Entity(klass) {
   this.klass = klass;
 
   this.isNewRecord = function(resource) {
-    return resource == undefined || parseInt(resource.id) == 0;
+    return resource == undefined || resource.id == undefined || parseInt(resource.id) == 0;
   }
 
   this.save  = function(resource, success, error) {

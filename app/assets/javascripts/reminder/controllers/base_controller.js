@@ -1,11 +1,10 @@
-reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$state", "$stateParams", "AppHelper",
-  function($rootScope, $scope, $location, $state, $stateParams, AppHelper) {
+reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$state", "$stateParams", "$timeout", "AppHelper",
+  function($rootScope, $scope, $location, $state, $stateParams,$timeout, AppHelper) {
 
-  $scope.FLASH_TIMEOUT = 10000;
   $rootScope.appHelper = AppHelper;
   
-  $rootScope.flashMessage = "";
-  $rootScope.loading = false;
+  $rootScope._flashMessage = "";
+  $rootScope._loading = false;
   $scope.currentUrl = "";
 
   $scope.init = function() {
@@ -16,30 +15,36 @@ reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$st
 
   //Flash message
   $scope.setFlashSuccess = function(msg) {
-    $rootScope.flashStatus = "success";
-    $rootScope.flashMessage = msg;
+    $rootScope._flashStatus = "success";
+    $rootScope._flashMessage = msg;
   }
 
   $scope.setFlashFailure = function(msg) {
-    $rootScope.flashStatus = "failed";
-    $rootScope.flashMessage = msg;
+    $rootScope._flashStatus = "failed";
+    $rootScope._flashMessage = msg;
   }
 
   $scope.setLoading = function(loading) {
-    $rootScope.loading = loading;
+    $rootScope._loading = loading;
+  }
+
+  $scope.isLoading = function(){
+    return $rootScope._loading
   }
 
   $scope.flushFlashMessage = function(){
-    var message = $rootScope.flashMessage;
-    return message;
+    $timeout(function(){
+      $rootScope._flashMessage = ""
+    }, 5*1000)
+    return $rootScope._flashMessage
   }
 
   $scope.flashStatus = function(){
-    return $rootScope.flashStatus;
+    return $rootScope._flashStatus;
   }
 
   $scope.flashMessage = function() {
-    return $rootScope.flashMessage;
+    return $rootScope._flashMessage;
   }
 
   $scope.isMenuActive = function(path){
@@ -55,12 +60,12 @@ reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$st
   }
 
   $scope.setBreadcrumbs = function(breadcrumbs) {
-    $rootScope.breadcrumbs = breadcrumbs;
+    $rootScope._breadcrumbs = breadcrumbs;
   }
 
     //COMPONENTS
   $scope.breadcrumbs = function() {
-    return $rootScope.breadcrumbs;
+    return $rootScope._breadcrumbs;
   }
 
 }])

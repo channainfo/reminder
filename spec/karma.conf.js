@@ -18,9 +18,9 @@ module.exports = function(config) {
       // 'vendor/assets/javascripts/**',
       // 'app/assets/javascripts/reminder/**',
       'spec/javascripts/spec/spec_helper.js',
+      'spec/javascripts/fake/**',
       'http://localhost:3030/assets/application.js',
       'spec/javascripts/lib/angular-mocks.js',
-      //'spec/javascripts/lib/reminder_test.js',
       'spec/javascripts/spec/**'
     ],
 
