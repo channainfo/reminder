@@ -3,34 +3,48 @@
     <div class='form-group field-block' ng-class="group.name == '' ? 'has-error' : '' ">
       <div> <label class="control-label" for="name"> Name </label></div>
       <div class='control'>
-       <input type='text' id="name" ng-model="group.name" class="form-control" />
-       <input type='hidden' ng-model="group.id" />
+       <input autocomplete="off" type='text' id="name" ng-model="group.name" class="form-control" />
+      </div>
+    </div>
+
+    <div>
+      <div class='form-group field-block'>
+        <label class="control-label" for="new_address">Addresses</label>
+      </div>
+
+      <div class='form-group field-block' ng-repeat="address in group.addresses">
+        <div class='control ui-multi'>
+          <input readonly="readonly" type='text' id='address-{{$index}}' class='ui-multi form-control' value="{{address}}" />
+          <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
+        </div>
       </div>
     </div>
 
     <div class='form-group field-block'>
-      <label class="control-label" for="new_address">Addresses</label>
-    </div>
-
-    <div class='form-group field-block' ng-repeat="address in group.addresses">
       <div class='control ui-multi'>
-        <input readonly="readonly" type='text' id='address-{{$index}}' class='ui-multi form-control' value="{{address}}" />
-        <a ng-click='removeAddress($index)' class="btn btn-xs btn-danger glyphicon glyphicon-minus"> </a>
+        <span ng-class="isNewAddressValid() ? '' : 'has-error' ">
+          <input autocomplete="off" type='text' id="new_address" 
+                 class='ui-multi form-control'
+                 ng-model="newAddress" />
+        </span>
+
+        <button class="btn btn-xs btn-primary glyphicon glyphicon-plus"
+           ng-click='addNewAddress()'
+           ng-disabled='!isNewAddressValid() || !newAddress' >
+        </button>
       </div>
     </div>
 
-    <div class='form-group field-block' ng-class="newAddress =='' ? 'has-error' : '' ">
-      <div class='control ui-multi'>
-        <input type='text' id="new_address" ng-model="newAddress" class='ui-multi form-control' />
-        <a ng-click='addNewAddress()' class="btn btn-xs btn-primary glyphicon glyphicon-plus"> </a>
-      </div>
-    </div>
 
-    <div class='form-group field-block'>
+    <div class='form-group field-block btn-block'>
       <label> </label>
       <div class='control'>
-        <button ng-click='save()' class="btn btn-primary">Save</button>
-        <button ui-sref='groups' class="btn btn-default">Cancel</button>
+        <button class="btn btn-primary" 
+                ng-click='save()'
+                ng-disabled="!isValid()" >
+                Save
+        </button>
+        <a ui-sref="groups({projectId: params('projectId')})" class="btn btn-default">Cancel</a>
       </div>
     </div>
   </form>

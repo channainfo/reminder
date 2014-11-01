@@ -1,12 +1,14 @@
 <div class='pageTitle'>
   <div id='schedule-index' class="animate-container">
 
-    <rm-add-bar title="'New Schedule'" url="'schedules-new'" ></rm-add-bar>
+    <rm-add-bar data-title="'New Schedule'" 
+                data-url="appHelper.url('schedules-new', {projectId: params('projectId')})" >
+    </rm-add-bar>
 
     <div ng-repeat='schedule in schedules' class="panel panel-default animate-repeat">
       <div class="panel-heading clearfix">
         <div class="r-side bar-icon">
-          <a class="icon" ui-sref="schedules-edit({scheduleId: schedule.id})">
+          <a class="icon" ui-sref="schedules-edit({projectId: params('projectId'), scheduleId: schedule.id})">
             <span class="glyphicon glyphicon-pencil"> </span>
           </a>
 
@@ -15,7 +17,7 @@
           </a>
         </div>
         <div class="l-side bar-title">
-          {{schedule.findCallFlowIn(callFlows).projectName}}
+          {{project.name}}
         </div>
       </div>
 
@@ -23,16 +25,18 @@
         <p>
           Call all contacts in
           <b> {{schedule.findGroupIn(groups).name}} </b> reminder group with
-          <b> {{schedule.findCallFlowIn(callFlows).name}} </b> call flow using
+          <b> {{schedule.findCallFlowIn(project.call_flows).name}} </b> call flow using
           <b> {{schedule.channelsAsText()}} </b> channel(s)
           
           <!-- When Today - test = 1 day -->
           <span ng-show="schedule.hasConditions()">
-            When Today -
-              {{schedule.conditions.var_name.name}}
-              {{schedule.conditions.operator}}
-              {{schedule.conditions.value}}
-              {{schedule.conditions.data_type}}
+            When <b>Today</b> -
+              <b>
+              {{schedule.conditions[0].var_name.name}}
+              {{schedule.conditions[0].operator}}
+              {{schedule.conditions[0].value}}
+              {{schedule.conditions[0].data_type}}
+             </b>
           </span>
         </p>
       </div>

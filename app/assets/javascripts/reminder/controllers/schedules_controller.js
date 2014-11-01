@@ -1,18 +1,13 @@
 reminder.controller("SchedulesController", 
-                  ["$scope", "$state", "Project", "Schedule", "Group", "Channel", "ScheduleHelper",
-                  function($scope, $state, Project, Schedule, Group, Channel, ScheduleHelper){
+                  ["$scope", "Project", "Schedule", "Group", "Channel", "Loader",
+                  function($scope, Project, Schedule, Group, Channel, Loader){
 
   $scope.groups            = [];
   $scope.schedules         = [];
   $scope.channels          = [];
 
-  $scope.projects          = [];
-  $scope.callFlows         = [];
-  $scope.projectVariables  = [];
-
   $scope.init = function(){
-    ScheduleHelper.loadTo($scope, {
-      projects: true,
+    Loader.fetchTo($scope, {
       channels: true,
       schedules: true,
       groups: true
@@ -20,21 +15,24 @@ reminder.controller("SchedulesController",
   }
 
   $scope.remove = function(schedule) {
-    if(!confirm("Are you sure you want to remove?")) return;
-    $scope.setLoadingStatus(true);
-    Schedule.remove({id: schedule.id}).$promise.then(
+    if(!confirm("Are you sure you want to remove?"))
+      return;
+
+    $scope.setLoading(true);
+
+    Schedule.remove({project_id: $scope.params("projectId"), id: schedule.id},
       function(){
-        $scope.setLoadingStatus(false);
         var index = $scope.schedules.indexOf(schedule);
         if(index != -1)
           $scope.schedules.splice(index, 1);
 
-        $scope.setSuccess("Schedule has been removed");
-        $state.go("schedules");
+        $scope.setLoading(false);
+        $scope.setFlashSuccess("Schedule has been removed");
+        $scope.redirectTo("schedules", {projectId: $scope.params("projectId")});
       },
       function(){
-        $scope.setLoadingStatus(false);
-        $scope.setFailure("Couldn't remove schedule");
+        $scope.setLoading(false);
+        $scope.setFlashFailure("Couldn't remove schedule");
       }
     );
   }

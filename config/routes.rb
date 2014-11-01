@@ -11,16 +11,19 @@ Rails.application.routes.draw do
   delete 'sign_out', to: 'sessions#destroy'
   resources :sessions, only: [:new, :create, :destroy]
   
-  resources :groups do
-    collection do
-      get 'collection'
+  resources :projects, only: [:index] do
+    resources :groups do
+      collection do
+        get 'collection'
+      end
     end
-  end
 
-  resources :schedules
+    resources :schedules
+  end
 
   get 'channels', to: 'channels#index'
   get 'projects', to: 'projects#index'
+  get 'channels', to: 'callflows#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

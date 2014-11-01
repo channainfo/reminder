@@ -1,0 +1,16 @@
+<ol class="breadcrumb" >
+  <li ng-if="breadcrumbs().length > 0">
+    <a ui-sref="projects">Home</a><span></span>
+  </li>
+
+  <li ng-if="breadcrumbs().length == 0"><span>Home</span></li>
+  <!-- separator -->
+  <li ng-repeat="breadcrumb in breadcrumbs()" >
+    <!-- item as link or text -->
+    <a ng-if="breadcrumb.url" ui-sref="{{breadcrumb.url}}">{{breadcrumb.label}}</a>
+    <span ng-if="!breadcrumb.url" >{{breadcrumb.label}}</span>
+
+    <!-- separator -->
+    <span ng-if="!$last"></span>
+  </li>
+</li>

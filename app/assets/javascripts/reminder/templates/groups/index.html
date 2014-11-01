@@ -1,7 +1,12 @@
-<div class="form-container">
-  <div ng-include src="'reminder/templates/shared/alert.html'"> </div>
+
+<div class="form-container" ng-controller="ProjectController" ng-init="init()">
+  <rm_breadcrumb></rm_breadcrumb>
+  <rm_tab data-active="'groups'" data-project="params('projectId')"> </rm_tab>
+  <rm_flash > </rm_flash>
+  <rm_alert > </rm_alert>
 
   <div ng-controller="GroupsController" ng-init="init()">
     <div ng-include src="'reminder/templates/groups/_list.html'"> </div>
   </div>
+
 </div>

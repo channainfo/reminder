@@ -1,4 +1,4 @@
-class Service::Channel < ActiveApi
+class Api::Channel < ActiveApi
   attribute :id, Integer
   attribute :name, String
 

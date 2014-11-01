@@ -1,10 +1,23 @@
 Array.prototype.indexOfElement = function(search, func) {
-
   for(var i = 0; i < this.length; i++) {
-    if(func(search, this[i]))
+    var result = func(search, this[i]);
+    if(result)
        return i;
   }
   return -1;
+}
+
+Array.prototype.removeElement = function(search, func){
+  var index = this.indexOfElement(search, func);
+  if(index != -1) {
+    var remove = this.splice(index, 1);
+    return remove[0];
+  }
+  return null;
+}
+
+Array.prototype.hasElement = function(search, func){
+  return this.indexOfElement(search, func) != -1
 }
 
 Array.prototype.findElement = function(search, func) {

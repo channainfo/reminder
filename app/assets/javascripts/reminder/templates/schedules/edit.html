@@ -1,8 +1,14 @@
-<div class="form-container">
+<div class="form-container" ng-controller="ProjectController" ng-init="init()">
+  <rm_breadcrumb></rm_breadcrumb>
+  <rm_tab data-active="'schedules'" data-project="params('projectId')"> </rm_tab>
+  <rm_flash > </rm_flash>
+  <rm_alert > </rm_alert>
+  
   <div class="panel panel-default">
     <div class="panel-heading">Edit Schedule {{schedule.name}}</div>
     <div class="panel-body">
-      <div ng-include src="'reminder/templates/schedules/_form.html'"></div>
+      <div ng-include 
+           src="'reminder/templates/schedules/_form.html'"></div>
     </div>
   </div>
 </div>
