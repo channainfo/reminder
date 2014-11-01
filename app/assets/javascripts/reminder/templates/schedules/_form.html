@@ -1,5 +1,5 @@
 <div ng-controller="ScheduleController" ng-init="init()">
-  <form role="form">
+  <form role="form" novalidate>
 
     <!-- Group -->
     <div class='form-group field-block' 
@@ -21,7 +21,7 @@
         <select id="call_flow" 
                 class='form-control'
                 ng-model="schedule.call_flow_id"
-                ng-options="callFlow.id as callFlow.name group by callFlow.projectName for callFlow in callFlows">
+                ng-options="callFlow.id as callFlow.name  for callFlow in project.call_flows">
         </select>
       </div>
     </div>
@@ -39,22 +39,24 @@
           </a>
         </div>
       </div>
-
     </div>
-
 
     <div class='form-group field-block' 
          ng-class="schedule.channels.length ? '' : 'has-error' ">
       <div class='control ui-multi'>
-        <select id="new_channel" 
-                class='form-control'
-                ng-model="newChannel" 
-                ng-options="channel.name for channel in channels">
-        </select>
+        <span ng-class="isNewChannelAvailable()? '' : 'has-error' ">
+          <select id="new_channel" 
+                  class='form-control'
+                  ng-model="newChannel" 
+                  ng-options="channel.name for channel in channels">
+          </select>
+        </span>
 
-        <a ng-click='addNewChannel()' 
-           class="btn btn-xs btn-primary glyphicon glyphicon-plus">
-        </a>
+        <button class="btn btn-xs btn-primary glyphicon glyphicon-plus"
+          ng-click='addNewChannel()' 
+          ng-disabled='!isNewChannelValid()'
+          >
+        </button>
       </div>
     </div>
 
@@ -80,14 +82,15 @@
         <div class=' ui-form-multi'>
 
           <span ng-class="isValueValid() ? '' : 'has-error' " > 
-            <input type='text' class='form-control' ng-model='schedule.conditions.value' />
+            <input autocomplete='off' type='text' class='form-control'
+                   ng-model='schedule.conditions[0].value' />
           </span>
 
           <span>  </span>
 
           <span ng-class="isDataTypeValid() ? '' : 'has-error' "> 
             <select class='form-control'
-                    ng-model='schedule.conditions.data_type'
+                    ng-model='schedule.conditions[0].data_type'
                     ng-options= 'value for value in DATE_TYPES' >
             </select>
           </span>
@@ -101,8 +104,8 @@
         <div class='control'>
           <select id="project_variable" 
                   class='form-control'
-                  ng-model="schedule.conditions.var_name.name" 
-                  ng-options="variable.name as variable.name for variable in variables">
+                  ng-model="schedule.conditions[0].var_name.name" 
+                  ng-options="variable.name as variable.name for variable in project.project_variables">
           </select>
         </div>
       </div>
@@ -141,12 +144,12 @@
       <div class='control ui-2-label' >
         <span ng-class="isFromValid() ? '': 'has-error' ">
           <label class="label-inline" for="fromHour"> From </label>
-          <input ng-model='schedule.from' type='text' class='form-control' id='fromHour' />
+          <input id='fromHour' type='text' class='form-control' autocomplete='off' ng-model='schedule.from' />
         </span>
 
         <span ng-class="isToValid() ? '': 'has-error' ">
           <label class="label-inline" for="toHour"> To </label>
-          <input ng-model="schedule.to" type='text' class='form-control' id='toHour' />
+          <input id='toHour' type='text' class='form-control' autocomplete='off' ng-model="schedule.to"  />
         </span>
 
       </div>
@@ -162,11 +165,11 @@
       </p>
       <div class='control' 
            ng-class="isRetryValid() ? '' : 'has-error' " >
-        <input ng-model='schedule.retries' type='text' class='form-control' id='retry' />
+        <input type='text' class='form-control' autocomplete='off' ng-model='schedule.retries' />
       </div>
     </div>
 
-    <div class='form-group field-block'>
+    <div class='form-group field-block btn-block'>
       <label> </label>
       <div class='control'>
         <button class="btn btn-primary"
@@ -174,7 +177,7 @@
                 ng-disabled ='!isValid()' >
           Save
         </button>
-        <button class="btn btn-default" ui-sref='schedules' >Cancel</button>
+        <a class="btn btn-default" ui-sref="schedules({projectId: params('projectId')})" >Cancel</a>
       </div>
     </div>
   </form>

@@ -1,0 +1,28 @@
+<div class='pageTitle' ng-show="projects.length > 0">
+  <h3 class="title">Projects</h3>
+  <div id='group-index' class="animate-container">
+
+    <div ng-repeat='project in projects' class="panel panel-default animate-repeat">
+      <div class="panel-heading clearfix">
+        <div class="r-side bar-icon">
+
+          <a class="icon" ui-sref="groups({projectId: project.id})">
+            <span class="glyphicon glyphicon-chevron-right"> </span>
+          </a>
+
+        </div>
+        <div class="l-side bar-title">{{project.name}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-hide="projects.length > 0" >
+  <div class="app-warning bs-callout bs-callout-warning">
+    <h4>
+      <span class="glyphicon glyphicon-warning-sign"></span> 
+      <span>You don't have any projects </span>
+    </h4>
+  </div>
+
+</div>

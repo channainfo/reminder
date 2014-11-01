@@ -1,4 +1,4 @@
-class Service::Project < ActiveApi
+class Api::Project < ActiveApi
   attribute :id, Integer
   attribute :name, String
   attribute :call_flows, Array

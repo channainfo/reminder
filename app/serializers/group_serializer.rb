@@ -1,3 +1,3 @@
 class GroupSerializer < GroupInfoSerializer 
-  attributes :addresses
+  attributes :project_id, :name, :addresses
 end

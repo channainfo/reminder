@@ -1,7 +1,10 @@
-reminder.controller("BaseController", ["$scope", "$location", "$state", function($scope, $location, $state) {
-  $scope.status = false;
-  $scope.message = "";
-  $scope.loading = false;
+reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$state", "$stateParams", "$timeout", "AppHelper",
+  function($rootScope, $scope, $location, $state, $stateParams,$timeout, AppHelper) {
+
+  $rootScope.appHelper = AppHelper;
+  
+  $rootScope._flashMessage = "";
+  $rootScope._loading = false;
   $scope.currentUrl = "";
 
   $scope.init = function() {
@@ -10,27 +13,59 @@ reminder.controller("BaseController", ["$scope", "$location", "$state", function
     });
   }
 
-  $scope.setSuccess = function(msg) {
-    $scope.status = "success";
-    $scope.message = msg;
+  //Flash message
+  $scope.setFlashSuccess = function(msg) {
+    $rootScope._flashStatus = "success";
+    $rootScope._flashMessage = msg;
   }
 
-  $scope.setFailure = function(msg) {
-    $scope.status = "failed";
-    $scope.message = msg;
+  $scope.setFlashFailure = function(msg) {
+    $rootScope._flashStatus = "failed";
+    $rootScope._flashMessage = msg;
   }
 
-  $scope.setLoadingStatus = function(status) {
-    $scope.status = false
-    $scope.loading = status;
+  $scope.setLoading = function(loading) {
+    $rootScope._loading = loading;
+  }
+
+  $scope.isLoading = function(){
+    return $rootScope._loading
+  }
+
+  $scope.flushFlashMessage = function(){
+    $timeout(function(){
+      $rootScope._flashMessage = ""
+    }, 5*1000)
+    return $rootScope._flashMessage
+  }
+
+  $scope.flashStatus = function(){
+    return $rootScope._flashStatus;
+  }
+
+  $scope.flashMessage = function() {
+    return $rootScope._flashMessage;
   }
 
   $scope.isMenuActive = function(path){
     return $scope.currentUrl.indexOf(path) != -1 ? " active" : ""
   }
 
-  $scope.redirectTo = function(path){
-    $state.go(path);
+  $scope.redirectTo = function(path, params, options){
+    $state.go(path, params, options);
+  }
+
+  $scope.params = function(paramName){
+    return $stateParams[paramName];
+  }
+
+  $scope.setBreadcrumbs = function(breadcrumbs) {
+    $rootScope._breadcrumbs = breadcrumbs;
+  }
+
+    //COMPONENTS
+  $scope.breadcrumbs = function() {
+    return $rootScope._breadcrumbs;
   }
 
 }])

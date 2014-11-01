@@ -1,4 +1,4 @@
-class Service::Account < ActiveApi
+class Api::Account < ActiveApi
   attribute :id, Integer
   attribute :email, String
   attribute :auth_token, String

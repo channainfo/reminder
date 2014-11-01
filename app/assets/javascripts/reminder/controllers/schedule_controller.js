@@ -1,18 +1,33 @@
 reminder
   .controller("ScheduleController", 
-              ["$scope", "$stateParams", "Project", "Schedule", "Group", "Channel", "EntityManager", "ScheduleHelper", 
-              function($scope, $stateParams, Project, Schedule, Group, Channel, EntityManager, ScheduleHelper){
+              ["$scope", "Project", "Schedule", "Group", "Channel", "EntityManager", "Loader", 
+              function($scope, Project, Schedule, Group, Channel, EntityManager, Loader){
+
+  $scope.newChannel = null;
+  $scope.startDate    = new Date();
+  $scope.schedule = new Schedule({
+    id: 0,
+    project_id: $scope.params("projectId"),
+    group_id: 0,
+    channels: [],
+    call_flow_id: 0,
+    start_date: new Date(),
+    from: "",
+    to: "",
+    retries: "",
+    is_repeated: false,
+    conditions: []
+  });
 
   $scope.DATE_TYPES = ["Day", "Week", "Month", "Year"];
 
-
   $scope.groups            = [];
   $scope.channels          = [];
-  $scope.projects          = [];
+
+
 
   $scope.loadReferences = function(){
-    ScheduleHelper.loadTo($scope, {
-      projects: true,
+    Loader.fetchTo($scope, {
       channels: true,
       groups: true
     });
@@ -20,77 +35,38 @@ reminder
 
   $scope.init = function() {
     $scope.loadReferences();
-    $scope.setDefaultData();
-
     //load schedule if edit action
-    if($stateParams.scheduleId){
-      setTimeout(function(){
-         $scope.loadSchedule($stateParams.scheduleId);
-       }, 300);
-    }
+    if($scope.params("scheduleId"))
+      $scope.loadSchedule($scope.params("scheduleId"));
   }
 
   $scope.loadSchedule = function(id) {
-    Schedule.get({id: id},
+    $scope.setLoading(true);
+
+    Schedule.get({project_id: $scope.params("projectId"), id: id},
       function(schedule){
         $scope.schedule = schedule;
+        $scope.setLoading(false);
       }, 
       function() {
-        $scope.redirectTo("schedules");
+        $scope.setLoading(false);
+        $scope.setFlashFailure("Couldn't load schedule");
+        $scope.redirectTo("schedules", {projectId: $scope.params("projectId")});
       }
     );
   }
-
-  $scope.setDefaultSchedule = function(){
-    $scope.schedule = new Schedule({
-      id: 0,
-      group_id: 0,
-      channels: [],
-      call_flow_id: 0,
-      start_date: new Date(),
-      from: "",
-      to: "",
-      retries: "",
-      is_repeated: false,
-      conditions: { var_name: {},
-                    operator: "=",
-                    value: "",
-                    data_type: "" }
-    });
-  }
-
-  $scope.setDefaultData = function(){
-    $scope.setDefaultSchedule();
-    $scope.newChannel = null;
-    $scope.startDate    = new Date();
-  }
-
-  $scope.filterVariables = function(){
-    var callFlow = $scope.schedule.findCallFlowIn($scope.callFlows);
-    if(callFlow) {
-      $scope.variables = $scope.projectVariables.filter(callFlow.projectName, function(projectName, variable) {
-        return variable.projectName == projectName;
-      });
-    }
-  };
-
-  $scope.$watch('schedule.call_flow_id', function(newVal, oldVal){ 
-    if(newVal !=0)
-      $scope.filterVariables();
-  })
-
+  
   $scope.save = function(){
-    $scope.setLoadingStatus(true);
-
+    $scope.setLoading(true);
     var success = function(schedule){
-      $scope.setLoadingStatus(false)
-      $scope.setSuccess("Schedule has been saved");
-      $scope.redirectTo("schedules");
+      $scope.setLoading(false)
+      $scope.setFlashSuccess("Schedule has been saved");
+      $scope.redirectTo("schedules", {projectId: $scope.params("projectId")});
     }
 
     var error = function(){
-      $scope.setLoadingStatus(false);
-      $scope.setFailure("Couldn't save schedule");
+      $scope.setLoading(false);
+      $scope.setFlashFailure("Couldn't save schedule");
     }
 
     entity = EntityManager.getEntityFor(Schedule);
@@ -98,17 +74,24 @@ reminder
   }
 
   $scope.addNewChannel = function() {
-    if($scope.newChannel && !$scope.channelExists($scope.newChannel)) {
+    if($scope.isNewChannelValid()) {
       $scope.schedule.channels.push($scope.newChannel);
       $scope.newChannel = null;
     }
   }
 
-  $scope.channelExists = function(channel) {
-    var index = $scope.schedule.channels.indexOfElement(channel, function(channel, e) {
-      return channel.id == e.id;
-    })
-    return index != -1;
+  $scope.isNewChannelAvailable = function() {
+    if($scope.newChannel)
+      return !$scope.schedule.channels.hasElement($scope.newChannel, function(search, element){
+          return search.id == element.id
+        })
+    return true
+  }
+
+  $scope.isNewChannelValid = function(){
+    if($scope.newChannel && $scope.isNewChannelAvailable())
+      return true;
+    return false;
   }
 
   $scope.removeChannel = function(index){
@@ -118,7 +101,7 @@ reminder
   $scope.isValid = function(){
     var valid = $scope.schedule.group_id &&
                 $scope.schedule.call_flow_id &&
-                $scope.schedule.channels.length
+                $scope.schedule.channels.length > 0
 
     if($scope.schedule.is_repeated){
       valid = valid && 
@@ -126,26 +109,26 @@ reminder
               $scope.isVariableValid &&
               $scope.isDataTypeValid();
     }
-    else {
-      valid = $scope.isFromValid() && $scope.isToValid();
-
-    }
+    else
+      valid = valid && $scope.isFromValid() && $scope.isToValid();
 
     return valid && $scope.isRetryValid()
   }
 
   $scope.isValueValid = function(){
-    return $scope.schedule.conditions && $scope.schedule.conditions.value;
+    return $scope.schedule.hasConditions() &&
+           $scope.schedule.conditions[0].value;
   }
 
   $scope.isDataTypeValid = function(){
-    return $scope.schedule.conditions && $scope.schedule.conditions.data_type;
+    return $scope.schedule.hasConditions() &&
+           $scope.schedule.conditions[0].data_type;
   }
 
   $scope.isVariableValid = function(){
-    return $scope.schedule.conditions && 
-           $scope.schedule.conditions.var_name &&
-           $scope.schedule.conditions.var_name.name;
+    return $scope.schedule.hasConditions() && 
+           $scope.schedule.conditions[0].var_name &&
+           $scope.schedule.conditions[0].var_name.name;
   }
 
   $scope.isRetryValid = function(){

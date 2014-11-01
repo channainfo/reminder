@@ -1,5 +1,8 @@
-<div class="form-container">
-  <div ng-include src="'reminder/templates/shared/alert.html'"> </div>
+<div class="form-container" ng-controller='ProjectController' ng-init="init()">
+  <rm_breadcrumb></rm_breadcrumb>
+  <rm_tab data-active="'schedules'" data-project="params('projectId')"> </rm_tab>
+  <rm_flash > </rm_flash>
+  <rm_alert > </rm_alert>
 
   <div ng-controller="SchedulesController" ng-init="init()">
     <div ng-include src="'reminder/templates/schedules/_list.html'"> </div>

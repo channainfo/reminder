@@ -1,10 +1,10 @@
 class GroupsController < ApplicationController
   def index
-    render json: Group.all
+    render json: groups_by_project
   end
 
   def collection
-    render json: Group.all, each_serializer: GroupInfoSerializer
+    render json: groups_by_project, each_serializer: GroupInfoSerializer
   end
 
   def show
@@ -13,7 +13,8 @@ class GroupsController < ApplicationController
   end
 
   def create
-  	group = Group.new(filter_params)
+  	group = Group.new(protected_params)
+    group.addresses = params[:group][:addresses] || []
   	if group.save
   		render json: group, status: 201
 		else
@@ -21,9 +22,18 @@ class GroupsController < ApplicationController
   	end
   end
 
+  def groups_by_project
+    groups = Group.all
+    if params[:project_id].present?
+      groups = groups.where(project_id: params[:project_id] )
+    end
+    groups
+  end
+
   def update
     group = Group.find(params[:id])
-    if group.update_attributes(filter_params)
+    group.addresses = params[:group][:addresses] || []
+    if group.update_attributes(protected_params)
       render json: group
     else
       render_bad_request
@@ -42,7 +52,8 @@ class GroupsController < ApplicationController
   end
 
   private
-  def filter_params
-    inject_params(params.require(:group).permit(:name, addresses: []))
+
+  def protected_params
+    inject_params(params.require(:group).permit(:project_id, :name))
   end
 end

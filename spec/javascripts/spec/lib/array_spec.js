@@ -30,6 +30,28 @@ describe("Array", function(){
     });
   });
 
+  describe("removeElement", function(){
+    it("return remove element if found", function(){
+      var count = groups.length
+      var group = groups.removeElement({id: 2}, function(search, element){
+        return search.id == element.id
+      })
+
+      expect(group.id).toEqual(2)
+      expect(group.name).toEqual("reminder2")
+      expect(groups.length).toEqual(count-1)
+    })
+
+    it("return null if element not found", function(search, element){
+      var count = groups.length
+      var group = groups.removeElement({id: 10}, function(search, element){
+        return search.id == element.id
+      })
+      expect(group).toEqual(null)
+      expect(groups.length).toEqual(count)
+    })
+  })
+
   describe("findElement", function(){
     it("return element if found", function(){
       var search = {id: 2};

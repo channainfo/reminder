@@ -1,10 +1,11 @@
 <div class="blog-masthead">
   <div class='container'>
     <nav class="blog-nav">
-      <div class='l-side action-menu'> 
-        <a class='blog-nav-item' ui-sref= 'groups' > <%= ENV["APP_NAME"] %></a>
-        <a ng-class="isMenuActive('groups')" class='blog-nav-item' ui-sref= 'groups' > Reminder Groups</a>
-        <a ng-class="isMenuActive('schedules')" class='blog-nav-item' ui-sref= 'schedules'> Reminder Schedules </a>
+      <div class='l-side action-menu'>
+
+        <a class='blog-nav-item' ui-sref= 'projects' > 
+          <%= ENV["APP_NAME"] %>
+        </a>
       </div>
       <div class='r-side profile-menu'> <%= render 'layouts/login_bar' %> </div>
     </nav>

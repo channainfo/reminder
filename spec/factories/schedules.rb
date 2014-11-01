@@ -6,7 +6,8 @@ FactoryGirl.define do
     channels []
     call_flow_id 1
     start_date "2014-09-19"
-    conditions {}
+    conditions []
+    is_repeated false
 
     from "10:10"
     to "12:00"

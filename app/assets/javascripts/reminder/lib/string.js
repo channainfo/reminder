@@ -5,3 +5,7 @@ String.prototype.isCommaSeparatedNumber = function() {
 String.prototype.isHourFormat = function() {
   return this.match(/^\d{1,2}\:\d{1,2}$/) == null ? false : true;
 }
+
+String.prototype.isPhoneNumber = function() {
+  return this.match(/^\+?\d+$/) == null ? false : true;
+}
