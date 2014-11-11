@@ -10,6 +10,11 @@ reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$st
   $scope.init = function() {
     $scope.$on('$locationChangeStart', function(event) {
       $scope.currentUrl = $location.url();
+
+      //clearout the flash once change the page
+      $timeout(function(){
+        $rootScope._flashMessage = ""
+      }, 2*1000)
     });
   }
 
@@ -33,9 +38,6 @@ reminder.controller("BaseController", ["$rootScope", "$scope", "$location", "$st
   }
 
   $scope.flushFlashMessage = function(){
-    $timeout(function(){
-      $rootScope._flashMessage = ""
-    }, 5*1000)
     return $rootScope._flashMessage
   }
 

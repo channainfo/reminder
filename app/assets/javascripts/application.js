@@ -28,4 +28,3 @@
 //= require_tree ./reminder/routes
 //= require_tree ./reminder/directives
 
-//= require_tree ./init
