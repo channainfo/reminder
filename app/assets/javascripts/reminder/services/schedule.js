@@ -17,7 +17,7 @@ reminder.factory("Schedule", ["$resource", "Config", function($resource, Config)
         from: _self.from,
         to: _self.to,
         conditions: _self.conditions,
-        retries: _self.retries,
+        retries_in_hours: _self.retries_in_hours,
         is_repeated: _self.is_repeated,
         project_id: _self.project_id
       }

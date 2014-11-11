@@ -14,7 +14,7 @@ reminder
     start_date: new Date(),
     from: "",
     to: "",
-    retries: "",
+    retries_in_hours: "",
     is_repeated: false,
     conditions: []
   });
@@ -132,8 +132,8 @@ reminder
   }
 
   $scope.isRetryValid = function(){
-    if($scope.schedule.retries)
-       return $scope.schedule.retries.isCommaSeparatedNumber()
+    if($scope.schedule.retries_in_hours)
+       return $scope.schedule.retries_in_hours.isCommaSeparatedNumber()
     return true
   }
 

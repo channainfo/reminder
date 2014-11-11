@@ -11,6 +11,6 @@ FactoryGirl.define do
 
     from "10:10"
     to "12:00"
-    retries "1,23,1,20.60"
+    retries_in_hours "1,23,1,20.60"
   end
 end

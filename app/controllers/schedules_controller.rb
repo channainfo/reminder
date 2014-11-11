@@ -51,7 +51,7 @@ class SchedulesController < ApplicationController
   def protected_params
     attrs = params.require(:schedule).permit(:group_id, :project_id,
                   :call_flow_id, :start_date, :from,
-                  :to, :retries, :is_repeated)
+                  :to, :retries_in_hours, :is_repeated)
 
     inject_params(attrs)
   end
