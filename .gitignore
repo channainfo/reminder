@@ -40,3 +40,6 @@ nbproject/*
 # Ignore configuration files
 config/application.yml
 config/database.yml
+
+# Ignore javascript
+spec/javascripts/node_modules

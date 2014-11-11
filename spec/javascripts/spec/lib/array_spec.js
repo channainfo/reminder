@@ -42,7 +42,7 @@ describe("Array", function(){
       expect(groups.length).toEqual(count-1)
     })
 
-    it("return null if element not found", function(search, element){
+    it("return null if element not found", function(){
       var count = groups.length
       var group = groups.removeElement({id: 10}, function(search, element){
         return search.id == element.id
