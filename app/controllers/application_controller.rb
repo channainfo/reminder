@@ -55,11 +55,6 @@ class ApplicationController < ActionController::Base
     session[:previous_page]
   end
 
-  def inject_params options
-    options[:account_id] = current_account.id
-    options
-  end
-
   def render_bad_request
     head :bad_request
   end

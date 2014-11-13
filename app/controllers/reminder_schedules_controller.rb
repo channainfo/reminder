@@ -1,10 +1,6 @@
-class SchedulesController < ApplicationController
+class ReminderSchedulesController < ApplicationController
   def index
-    schedules = Schedule.all
-    if params[:project_id].present?
-      schedules = schedules.where(project_id: params[:project_id])
-    end
-    render json: schedules
+    render json: schedules_by_project
   end
 
   def show
@@ -48,6 +44,7 @@ class SchedulesController < ApplicationController
   end
 
   private
+
   def protected_params
     attrs = params.require(:schedule).permit(:group_id, :project_id,
                   :call_flow_id, :start_date, :from,
@@ -55,4 +52,9 @@ class SchedulesController < ApplicationController
 
     inject_params(attrs)
   end
+
+  def schedules_by_project
+    Api::ReminderSchedule.collection(params[:project_id])
+  end
+
 end

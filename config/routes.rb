@@ -12,13 +12,13 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   
   resources :projects, only: [:index] do
-    resources :groups do
+    resources :reminder_groups do
       collection do
         get 'collection'
       end
     end
 
-    resources :schedules
+    resources :reminder_schedules
   end
 
   get 'channels', to: 'channels#index'

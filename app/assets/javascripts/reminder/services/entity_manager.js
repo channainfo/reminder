@@ -13,7 +13,7 @@ function Entity(klass) {
   }
 }
 
-reminder.factory("EntityManager", ["Group", "Schedule" , function(Group, Schedule){
+reminder.factory("EntityManager", ["ReminderGroup", "ReminderSchedule" , function(ReminderGroup, ReminderSchedule){
   return {
     entity: null,
     getEntityFor: function(modelClass) {

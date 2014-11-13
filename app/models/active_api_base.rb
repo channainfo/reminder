@@ -24,7 +24,7 @@ module ActiveApiBase
 
   module ClassMethods
     def find(id)
-      response = Typhoeus.get("#{base_url}/#{id}",  body: embed(attributes), headers: {"Accept" => "application/json"})
+      response = Typhoeus.get("#{base_url}/#{id}",  body: embed(), headers: request_header)
       if response.success?
         data = JSON.parse(response.body, symbolize_names: true)
         return self.new(data)
@@ -44,48 +44,46 @@ module ActiveApiBase
     def where(parameters={})
       query = query_string parameters
  
-      response = Typhoeus.get("#{base_url}?#{query}",  body: embed(),  headers: {"Accept" => "application/json"})
+      response = Typhoeus.get("#{base_url}?#{query}", body: embed(), headers: request_header)
       if response.success?
         data = JSON.parse(response.body, symbolize_names: true)
         return data.map{ |record| self.new(record) }
-      else
-        raise ApiException.new('Could not connect to remote server')
+      # else
+      #   raise ApiException.new('Could not connect to remote server')
       end
     end
  
     alias_method :all, :where
  
     def create(attributes={})
-      response = Typhoeus::Request.post(base_url, body: embed(attributes), headers: {"content-type" => "application/x-www-form-urlencoded"})
+      response = Typhoeus::Request.post(base_url, body: embed(attributes), headers: request_header)
       data = JSON.parse(response.body, symbolize_names: true)
       if response.success?
         object = self.new(data)
-      else
-        object = self.new(attributes)
-        object.assign_errors(data) if response.response_code == 422
+      # else
+      #   raise ApiException.new('Could not connect to remote server')
       end
-      return object
     end
  
     def update(id, attributes={})
       object = self.new(attributes.merge(id: id))
-      response = Typhoeus::Request.put("#{base_url}/#{id}", body: embed(attributes), headers: {"content-type" => "application/x-www-form-urlencoded"})
-      if response.response_code == 422
-        data = JSON.parse(response.body, symbolize_names: true)
-        object.assign_errors(data)
-      end
-      return object
+      response = Typhoeus::Request.put("#{base_url}/#{id}", body: embed(attributes), headers: request_header)
+      data = JSON.parse(response.body, symbolize_names: true)
+      response.success?
     end
  
     def destroy(id)
-      query = query_string embed
-      response = Typhoeus::Request.delete("#{base_url}/#{id}?#{query}", headers: {"content-type" => "application/x-www-form-urlencoded"})
-      return response.success?
+      response = Typhoeus::Request.delete("#{base_url}/#{id}", body: embed, headers: request_header)
+      response.success?
     end
     
     def embed(attributes={})
       params = attributes.merge({email: ActiveApi.email, token: ActiveApi.auth_token})
-      params
+      JSON.generate(params)
+    end
+
+    def request_header
+      {"content-type" => "application/json", "Accept" => "application/json"}
     end
 
     def controller_name

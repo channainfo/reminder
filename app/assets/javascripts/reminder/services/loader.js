@@ -1,5 +1,5 @@
-reminder.factory("Loader", ["Channel", "Project", "Group", "Schedule",
-  function(Channel, Project, Group, Schedule){
+reminder.factory("Loader", ["Channel", "Project", "ReminderGroup", "ReminderSchedule",
+  function(Channel, Project, ReminderGroup, ReminderSchedule){
     return {
       fetchTo: function(scope, options){
 
@@ -18,7 +18,7 @@ reminder.factory("Loader", ["Channel", "Project", "Group", "Schedule",
         }
 
         if(options['groups']){
-          Group.collection({project_id: scope.params("projectId")}, function(groups) {
+          ReminderGroup.collection({project_id: scope.params("projectId")}, function(groups) {
             scope.groups = groups;
           });
         }
@@ -30,7 +30,7 @@ reminder.factory("Loader", ["Channel", "Project", "Group", "Schedule",
         }
 
         if(options['schedules']){
-          Schedule.query({project_id: scope.params("projectId")}, function(schedules){
+          ReminderSchedule.query({project_id: scope.params("projectId")}, function(schedules){
             scope.schedules = schedules;
           });
         }

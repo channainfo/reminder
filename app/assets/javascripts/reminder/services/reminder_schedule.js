@@ -1,5 +1,5 @@
-reminder.factory("Schedule", ["$resource", "Config", function($resource, Config){
-  var ScheduleModel = $resource( Config.host + "projects/:project_id/schedules/:id", null, {
+reminder.factory("ReminderSchedule", ["$resource", "Config", function($resource, Config){
+  var ScheduleModel = $resource( Config.host + "projects/:project_id/reminder_schedules/:id", null, {
     update: { method: 'PUT' },
     create: { method: 'POST'}
   });
@@ -9,7 +9,7 @@ reminder.factory("Schedule", ["$resource", "Config", function($resource, Config)
     var _self = this;
     if(_self.hasConditions()) _self.conditions[0].operator = "="
     return {
-      schedule: {
+      reminder_schedule: {
         group_id: _self.group_id,
         channels: _self.channels,
         call_flow_id: _self.call_flow_id,

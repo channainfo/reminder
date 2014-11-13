@@ -1,6 +1,6 @@
 reminder.controller("SchedulesController", 
-                  ["$scope", "Project", "Schedule", "Group", "Channel", "Loader",
-                  function($scope, Project, Schedule, Group, Channel, Loader){
+                  ["$scope", "Project", "ReminderSchedule", "Loader",
+                  function($scope, Project, ReminderSchedule, Loader){
 
   $scope.groups            = [];
   $scope.schedules         = [];
@@ -20,7 +20,7 @@ reminder.controller("SchedulesController",
 
     $scope.setLoading(true);
 
-    Schedule.remove({project_id: $scope.params("projectId"), id: schedule.id},
+    ReminderSchedule.remove({project_id: $scope.params("projectId"), id: schedule.id},
       function(){
         var index = $scope.schedules.indexOf(schedule);
         if(index != -1)

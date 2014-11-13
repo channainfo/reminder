@@ -1,11 +1,11 @@
 reminder
   .controller("ScheduleController", 
-              ["$scope", "Project", "Schedule", "Group", "Channel", "EntityManager", "Loader", 
-              function($scope, Project, Schedule, Group, Channel, EntityManager, Loader){
+              ["$scope", "Project", "ReminderSchedule", "EntityManager", "Loader", 
+              function($scope, Project, ReminderSchedule, EntityManager, Loader){
 
   $scope.newChannel = null;
   $scope.startDate    = new Date();
-  $scope.schedule = new Schedule({
+  $scope.schedule = new ReminderSchedule({
     id: 0,
     project_id: $scope.params("projectId"),
     group_id: 0,
@@ -43,7 +43,7 @@ reminder
   $scope.loadSchedule = function(id) {
     $scope.setLoading(true);
 
-    Schedule.get({project_id: $scope.params("projectId"), id: id},
+    ReminderSchedule.get({project_id: $scope.params("projectId"), id: id},
       function(schedule){
         $scope.schedule = schedule;
         $scope.setLoading(false);
@@ -58,7 +58,7 @@ reminder
   
   $scope.save = function(){
     $scope.setLoading(true);
-    var success = function(schedule){
+    var success = function(){
       $scope.setLoading(false)
       $scope.setFlashSuccess("Schedule has been saved");
       $scope.redirectTo("schedules", {projectId: $scope.params("projectId")});
@@ -69,7 +69,7 @@ reminder
       $scope.setFlashFailure("Couldn't save schedule");
     }
 
-    entity = EntityManager.getEntityFor(Schedule);
+    entity = EntityManager.getEntityFor(ReminderSchedule);
     entity.save($scope.schedule, success, error);
   }
 
