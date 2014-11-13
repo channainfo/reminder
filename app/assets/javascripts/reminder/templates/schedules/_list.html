@@ -26,13 +26,13 @@
           Call all contacts in
           <b> {{schedule.findGroupIn(groups).name}} </b> reminder group with
           <b> {{schedule.findCallFlowIn(project.call_flows).name}} </b> call flow using
-          <b> {{schedule.channelsAsText()}} </b> channel(s)
+          <b> {{schedule.channelsAsText(channels)}} </b> channel(s)
           
           <!-- When Today - test = 1 day -->
           <span ng-show="schedule.hasConditions()">
             When <b>Today</b> -
               <b>
-              {{schedule.conditions[0].var_name.name}}
+              {{schedule.conditions[0].variable}}
               {{schedule.conditions[0].operator}}
               {{schedule.conditions[0].value}}
               {{schedule.conditions[0].data_type}}

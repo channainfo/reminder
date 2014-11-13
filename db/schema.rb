@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20141111083958) do
     t.integer  "account_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "project_id"
+    t.integer  "project_id", default: 5
   end
 
   create_table "instances", force: true do |t|

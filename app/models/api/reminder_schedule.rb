@@ -3,13 +3,14 @@ class Api::ReminderSchedule < ActiveApi
   attribute :project_id, Integer
   attribute :call_flow_id, Integer
   attribute :reminder_group_id, Integer
-  attribute :channels, Array
+  attribute :reminder_channels, Array
 
   attribute :client_start_date, Date
   attribute :time_from, String
   attribute :time_to, String
   attribute :schedule_type, Integer
   attribute :conditions, Array
+  attribute :reties, Integer
   attribute :retries_in_hours, String
 
   def self.collection project_id

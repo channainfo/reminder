@@ -1,30 +1,28 @@
 reminder
   .controller("ScheduleController", 
-              ["$scope", "Project", "ReminderSchedule", "EntityManager", "Loader", 
-              function($scope, Project, ReminderSchedule, EntityManager, Loader){
+              ["$scope", "Project", "ReminderSchedule", "DataTransformer", "EntityManager", "Loader", 
+              function($scope, Project, ReminderSchedule, DataTransformer, EntityManager, Loader){
 
   $scope.newChannel = null;
   $scope.startDate    = new Date();
   $scope.schedule = new ReminderSchedule({
     id: 0,
     project_id: $scope.params("projectId"),
-    group_id: 0,
-    channels: [],
+    reminder_group_id: 0,
+    reminder_channels: [],
     call_flow_id: 0,
-    start_date: new Date(),
-    from: "",
-    to: "",
+    client_start_date: new Date(),
+    time_from: "",
+    time_to: "",
     retries_in_hours: "",
     is_repeated: false,
     conditions: []
   });
 
-  $scope.DATE_TYPES = ["Day", "Week", "Month", "Year"];
+  $scope.DATE_TYPES = ["day", "week", "month", "year"];
 
   $scope.groups            = [];
   $scope.channels          = [];
-
-
 
   $scope.loadReferences = function(){
     Loader.fetchTo($scope, {
@@ -45,7 +43,7 @@ reminder
 
     ReminderSchedule.get({project_id: $scope.params("projectId"), id: id},
       function(schedule){
-        $scope.schedule = schedule;
+        $scope.schedule = DataTransformer.schedule(schedule);
         $scope.setLoading(false);
       }, 
       function() {
@@ -54,6 +52,12 @@ reminder
         $scope.redirectTo("schedules", {projectId: $scope.params("projectId")});
       }
     );
+  }
+
+  $scope.findChannel = function(channelId){
+    return $scope.channels.findElement(channelId, function(channelId, channel){
+      return channelId == channel.id
+    });
   }
   
   $scope.save = function(){
@@ -75,15 +79,15 @@ reminder
 
   $scope.addNewChannel = function() {
     if($scope.isNewChannelValid()) {
-      $scope.schedule.channels.push($scope.newChannel);
+      $scope.schedule.reminder_channels.push({channel_id: $scope.newChannel.id});
       $scope.newChannel = null;
     }
   }
 
   $scope.isNewChannelAvailable = function() {
     if($scope.newChannel)
-      return !$scope.schedule.channels.hasElement($scope.newChannel, function(search, element){
-          return search.id == element.id
+      return !$scope.schedule.reminder_channels.hasElement($scope.newChannel, function(search, element){
+          return search.id == element.channel_id
         })
     return true
   }
@@ -95,13 +99,13 @@ reminder
   }
 
   $scope.removeChannel = function(index){
-    $scope.schedule.channels.splice(index, 1);
+    $scope.schedule.reminder_channels.splice(index, 1);
   }
 
   $scope.isValid = function(){
-    var valid = $scope.schedule.group_id &&
+    var valid = $scope.schedule.reminder_group_id &&
                 $scope.schedule.call_flow_id &&
-                $scope.schedule.channels.length > 0
+                $scope.schedule.reminder_channels.length > 0
 
     if($scope.schedule.is_repeated){
       valid = valid && 
@@ -127,8 +131,7 @@ reminder
 
   $scope.isVariableValid = function(){
     return $scope.schedule.hasConditions() && 
-           $scope.schedule.conditions[0].var_name &&
-           $scope.schedule.conditions[0].var_name.name;
+           $scope.schedule.conditions[0].variable
   }
 
   $scope.isRetryValid = function(){
@@ -138,11 +141,11 @@ reminder
   }
 
   $scope.isFromValid = function(){
-    return $scope.schedule.from.isHourFormat();
+    return $scope.schedule.time_from.isHourFormat();
   }
 
   $scope.isToValid = function(){
-    return $scope.schedule.to.isHourFormat();
+    return $scope.schedule.time_to.isHourFormat();
   }
 
 }])

@@ -10,16 +10,19 @@ reminder.factory("ReminderSchedule", ["$resource", "Config", function($resource,
     if(_self.hasConditions()) _self.conditions[0].operator = "="
     return {
       reminder_schedule: {
-        group_id: _self.group_id,
-        channels: _self.channels,
+        project_id: _self.project_id,
+        reminder_group_id: _self.reminder_group_id,
+        reminder_channels_attributes: _self.reminder_channels.map(function(reminder_channel){
+          return {id: reminder_channel.id, channel_id: reminder_channel.channel_id}
+        }),
         call_flow_id: _self.call_flow_id,
-        start_date: _self.start_date,
-        from: _self.from,
-        to: _self.to,
+        client_start_date: _self.client_start_date.strftime(Config.dateFormat),
+        time_from: _self.time_from,
+        time_to: _self.time_to,
         conditions: _self.conditions,
+        retries: _self.retries_in_hours ? 1 : 0,
         retries_in_hours: _self.retries_in_hours,
-        is_repeated: _self.is_repeated,
-        project_id: _self.project_id
+        schedule_type: _self.schedule_type
       }
     }
   }
@@ -38,8 +41,11 @@ reminder.factory("ReminderSchedule", ["$resource", "Config", function($resource,
            });
   }
 
-  ScheduleModel.prototype.channelsAsText = function(){
-    var results = this.channels.map(function(channel){
+  ScheduleModel.prototype.channelsAsText = function(channels){
+    var results = this.reminder_channels.map(function(reminderChannel){ 
+      var channel = channels.findElement(reminderChannel, function(reminderChannel, channel){
+        return reminderChannel.channel_id == channel.id;
+      })
       return channel.name
     });
     return results.join(", ")

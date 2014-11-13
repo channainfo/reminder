@@ -24,7 +24,7 @@ module ActiveApiBase
 
   module ClassMethods
     def find(id)
-      response = Typhoeus.get("#{base_url}/#{id}",  body: embed(), headers: request_header)
+      response = Typhoeus.get("#{base_url}/#{id}",  body: embed(), headers: {'accept' => 'application/json'})
       if response.success?
         data = JSON.parse(response.body, symbolize_names: true)
         return self.new(data)
@@ -44,46 +44,37 @@ module ActiveApiBase
     def where(parameters={})
       query = query_string parameters
  
-      response = Typhoeus.get("#{base_url}?#{query}", body: embed(), headers: request_header)
+      response = Typhoeus.get("#{base_url}?#{query}", body: embed(), headers: {'accept' => 'application/json'})
       if response.success?
         data = JSON.parse(response.body, symbolize_names: true)
         return data.map{ |record| self.new(record) }
-      # else
-      #   raise ApiException.new('Could not connect to remote server')
       end
     end
  
     alias_method :all, :where
  
     def create(attributes={})
-      response = Typhoeus::Request.post(base_url, body: embed(attributes), headers: request_header)
+      response = Typhoeus::Request.post(base_url, body: JSON.generate(embed(attributes)), headers: {'content-type' => 'application/json'})
       data = JSON.parse(response.body, symbolize_names: true)
       if response.success?
         object = self.new(data)
-      # else
-      #   raise ApiException.new('Could not connect to remote server')
       end
     end
  
     def update(id, attributes={})
       object = self.new(attributes.merge(id: id))
-      response = Typhoeus::Request.put("#{base_url}/#{id}", body: embed(attributes), headers: request_header)
+      response = Typhoeus::Request.put("#{base_url}/#{id}", body: JSON.generate(embed(attributes)), headers: {'content-type' => 'application/json'})
       data = JSON.parse(response.body, symbolize_names: true)
       response.success?
     end
  
     def destroy(id)
-      response = Typhoeus::Request.delete("#{base_url}/#{id}", body: embed, headers: request_header)
+      response = Typhoeus::Request.delete("#{base_url}/#{id}", body: embed, headers: {'accept' => 'application/json'})
       response.success?
     end
     
     def embed(attributes={})
-      params = attributes.merge({email: ActiveApi.email, token: ActiveApi.auth_token})
-      JSON.generate(params)
-    end
-
-    def request_header
-      {"content-type" => "application/json", "Accept" => "application/json"}
+      attributes.merge({email: ActiveApi.email, token: ActiveApi.auth_token})
     end
 
     def controller_name
