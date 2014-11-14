@@ -3,12 +3,12 @@
 
     <!-- Group -->
     <div class='form-group field-block' 
-         ng-class="schedule.group_id ? '': 'has-error' ">
+         ng-class="schedule.reminder_group_id ? '': 'has-error' ">
       <label class="control-label" for="group">Group</label>
       <div class='control'>
         <select id="group" 
                 class='form-control'
-                ng-model="schedule.group_id" 
+                ng-model="schedule.reminder_group_id" 
                 ng-options="group.id as group.name for group in groups"></select>
       </div>
     </div>
@@ -27,13 +27,13 @@
     </div>
 
     <hr>
-    <div class='' ng-class="schedule.channels.length > 0 ? '' : 'has-error' " >
+    <div class='' ng-class="schedule.reminder_channels.length > 0 ? '' : 'has-error' " >
       <span>Channels</span>
       
-      <div class='form-group field-block' ng-repeat="channel in schedule.channels">
+      <div class='form-group field-block' ng-repeat="reminderChannel in schedule.reminder_channels">
         <div class='control ui-multi'>
           <input readonly="readonly" type='text' id='channel-{{$index}}' 
-                 class='form-control' value="{{channel.name}}" />
+                 class='form-control' value="{{findChannel(reminderChannel.channel_id).name}}" />
           <a ng-click='removeChannel($index)' 
              class="btn btn-xs btn-danger glyphicon glyphicon-minus"> 
           </a>
@@ -42,7 +42,7 @@
     </div>
 
     <div class='form-group field-block' 
-         ng-class="schedule.channels.length ? '' : 'has-error' ">
+         ng-class="schedule.reminder_channels.length ? '' : 'has-error' ">
       <div class='control ui-multi'>
         <span ng-class="isNewChannelAvailable()? '' : 'has-error' ">
           <select id="new_channel" 
@@ -68,7 +68,7 @@
         <span> Allow condition </span>
         <br />
         <toggle-switch
-              model="schedule.is_repeated"
+              model="schedule.schedule_type"
               class="switch-small"
               on-label="Yes"
               off-label="No" >
@@ -77,7 +77,7 @@
     </p>
 
     <!-- ON -->
-    <div ng-show="schedule.is_repeated">
+    <div ng-show="schedule.schedule_type">
       <div class='form-group field-block' >
         <div class=' ui-form-multi'>
 
@@ -104,7 +104,7 @@
         <div class='control'>
           <select id="project_variable" 
                   class='form-control'
-                  ng-model="schedule.conditions[0].var_name.name" 
+                  ng-model="schedule.conditions[0].variable"
                   ng-options="variable.name as variable.name for variable in project.project_variables">
           </select>
         </div>
@@ -112,7 +112,7 @@
     </div>
 
     <!-- OFF -->
-    <div ng-hide="schedule.is_repeated" class='form-group field-block calendar-form' 
+    <div ng-hide="schedule.schedule_type" class='form-group field-block calendar-form' 
          ng-controller='CalendarController' >
       <label class="control-label" for="project_variable">Start on (DD/MM/YYYY)</label>
       <div class='control' >
@@ -121,7 +121,7 @@
           <input type="text" 
                  class="form-control" 
                  datepicker-popup="{{format}}" 
-                 ng-model="schedule.start_date" 
+                 ng-model="schedule.client_start_date" 
                  is-open="opened"
                  datepicker-options="dateOptions"
                  date-disabled="disabled(date, mode)"
@@ -144,12 +144,12 @@
       <div class='control ui-2-label' >
         <span ng-class="isFromValid() ? '': 'has-error' ">
           <label class="label-inline" for="fromHour"> From </label>
-          <input id='fromHour' type='text' class='form-control' autocomplete='off' ng-model='schedule.from' />
+          <input id='fromHour' type='text' class='form-control' autocomplete='off' ng-model='schedule.time_from' />
         </span>
 
         <span ng-class="isToValid() ? '': 'has-error' ">
           <label class="label-inline" for="toHour"> To </label>
-          <input id='toHour' type='text' class='form-control' autocomplete='off' ng-model="schedule.to"  />
+          <input id='toHour' type='text' class='form-control' autocomplete='off' ng-model="schedule.time_to"  />
         </span>
 
       </div>
@@ -165,7 +165,7 @@
       </p>
       <div class='control' 
            ng-class="isRetryValid() ? '' : 'has-error' " >
-        <input type='text' class='form-control' autocomplete='off' ng-model='schedule.retries' />
+        <input type='text' class='form-control' autocomplete='off' ng-model='schedule.retries_in_hours' />
       </div>
     </div>
 

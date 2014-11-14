@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141024082244) do
+ActiveRecord::Schema.define(version: 20141111083958) do
 
   create_table "groups", force: true do |t|
     t.string   "name"
@@ -38,11 +38,11 @@ ActiveRecord::Schema.define(version: 20141024082244) do
     t.text     "conditions"
     t.string   "from"
     t.string   "to"
-    t.string   "retries"
+    t.string   "retries_in_hours"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "account_id"
-    t.boolean  "is_repeated",  default: false
+    t.boolean  "is_repeated",      default: false
     t.integer  "project_id"
   end
 

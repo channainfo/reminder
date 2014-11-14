@@ -1,6 +1,6 @@
 reminder.controller("GroupsController", 
-                  ["$scope", "Group",
-                  function($scope, Group){
+                  ["$scope", "ReminderGroup",
+                  function($scope, ReminderGroup){
 
   $scope.editingMode = false;
   $scope.groups = [];
@@ -8,7 +8,7 @@ reminder.controller("GroupsController",
   $scope.init = function(){
     $scope.setLoading(true);
 
-    Group.query({project_id: $scope.params("projectId")}, function(groups){
+    ReminderGroup.query({project_id: $scope.params("projectId")}, function(groups){
       $scope.groups = groups;
       $scope.setLoading(false);
     })
@@ -36,7 +36,7 @@ reminder.controller("GroupsController",
     }
     
     $scope.setLoading(true);
-    Group.remove({id: group.id, project_id: $scope.params("projectId")}, successCallback, errorCallback);
+    ReminderGroup.remove({id: group.id, project_id: $scope.params("projectId")}, successCallback, errorCallback);
   }
 
 }])

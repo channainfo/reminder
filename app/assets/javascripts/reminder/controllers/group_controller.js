@@ -1,9 +1,9 @@
 reminder
   .controller("GroupController", 
-	            ["$scope", "Group", "EntityManager",
-	            function($scope, Group, EntityManager){
+	            ["$scope", "ReminderGroup", "EntityManager",
+	            function($scope, ReminderGroup, EntityManager){
 
-	$scope.group = new Group({id:0, project_id: $scope.params("projectId"), name: '', addresses: []});
+	$scope.group = new ReminderGroup({id:0, project_id: $scope.params("projectId"), name: '', addresses: []});
 	$scope.newAddress = "";
 
 	$scope.init = function() {
@@ -14,7 +14,7 @@ reminder
 
 	$scope.fetchGroup = function() {
 		$scope.setLoading(true);
-		Group.get({project_id: $scope.params("projectId"), id: $scope.params("groupId")}, function(group){
+		ReminderGroup.get({project_id: $scope.params("projectId"), id: $scope.params("groupId")}, function(group){
 			$scope.group = group;
 			$scope.setLoading(false)
 		}, function() {
@@ -26,7 +26,7 @@ reminder
 	$scope.save = function(){
 		$scope.setLoading(true);
 
-		var successCallback = function(group){
+		var successCallback = function(){
 			$scope.setLoading(false);
 			$scope.setFlashSuccess("Group has been saved");
 			$scope.redirectTo("groups", {projectId: $scope.params("projectId")});
@@ -37,7 +37,7 @@ reminder
 			$scope.setFlashFailure("Couldn't save group");
 		}
 
-		entity = EntityManager.getEntityFor(Group);
+		entity = EntityManager.getEntityFor(ReminderGroup);
 		entity.save($scope.group, successCallback, errorCallback);
 	}
 

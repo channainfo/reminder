@@ -1,10 +1,10 @@
-reminder.factory("Group", ["$resource", "Config", function($resource, Config){
-	var GroupModel = $resource( Config.host + "projects/:project_id/groups/:id", null, {
+reminder.factory("ReminderGroup", ["$resource", "Config", function($resource, Config){
+	var GroupModel = $resource( Config.host + "projects/:project_id/reminder_groups/:id", null, {
     update: { method: 'PUT' },
     create: { method: 'POST'},
-    collection: { method: 'GET', 
+    collection: { method: 'GET',
                   isArray: true,
-                  url: Config.host + "projects/:project_id/groups/collection"  }
+                  url: Config.host + "projects/:project_id/reminder_groups/collection"  }
   });
 
   //custom method for Group resource
@@ -19,13 +19,12 @@ reminder.factory("Group", ["$resource", "Config", function($resource, Config){
   GroupModel.prototype.toParams = function(){
     var _self = this;
     return  {
-      group: {
+      reminder_group: {
         name: _self.name,
         addresses: _self.addresses,
         project_id: _self.project_id
       }
     }
   }
-  
   return GroupModel;
 }])
